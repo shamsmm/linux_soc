@@ -1,0 +1,11 @@
+[submodule "interconnect"]
+    path = src/interconnect
+    url = ./src/interconnect
+
+[submodule "rv_core"]
+    path = src/rv_core
+    url = ./src/rv_core
+
+[submodule "test"]
+    path = test
+    url = ./test
