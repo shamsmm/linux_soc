@@ -5,6 +5,7 @@
     <Version>5</Version>
     <Device name="GW1NR-9C" pn="GW1NR-LV9QN88PC6/I5">gw1nr9c-004</Device>
     <FileList>
+        <File path="src/gowin_clkdiv/gowin_clkdiv.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_dpb/gowin_dpb.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_prom/gowin_prom.v" type="file.verilog" enable="1"/>
         <File path="src/gpio_wrapped.sv" type="file.verilog" enable="1"/>
@@ -13,11 +14,13 @@
         <File path="src/memory_wrapped.sv" type="file.verilog" enable="1"/>
         <File path="src/rom_wrapped.sv" type="file.verilog" enable="1"/>
         <File path="src/rv_core/alu.sv" type="file.verilog" enable="1"/>
+        <File path="src/rv_core/bus_if.sv" type="file.verilog" enable="1"/>
+        <File path="src/rv_core/bus_if_types_pkg.sv" type="file.verilog" enable="1"/>
         <File path="src/rv_core/cu.sv" type="file.verilog" enable="1"/>
+        <File path="src/rv_core/instructions.sv" type="file.verilog" enable="1"/>
         <File path="src/rv_core/rf.sv" type="file.verilog" enable="1"/>
         <File path="src/rv_core/rv_core.sv" type="file.verilog" enable="1"/>
         <File path="src/top.sv" type="file.verilog" enable="1"/>
-        <File path="src/rv_core/bus_if.svh" type="file.other" enable="1"/>
-        <File path="src/rv_core/instructions.svh" type="file.other" enable="1"/>
+        <File path="src/linux_soc.cst" type="file.cst" enable="1"/>
     </FileList>
 </Project>

@@ -11,8 +11,8 @@
 -type RAM_ROM
 -file_type vlg
 -pROM true
--depth 1023
+-depth 1024
 -width 32
--read_mode pipeline
+-read_mode bypass
 -reset_mode sync
--init_file /home/shams/W/Digital/Projects/linux_soc/tb/rom.mi
+-init_file /home/shams/W/Digital/Projects/linux_soc/test/rom.mi

@@ -7,9 +7,9 @@ type=ram_prom
 version=1.0
 
 [Config]
-DEPTH=1023
+DEPTH=1024
 LANG=0
-READ=1
+READ=0
 RESET_MODE=true
 WIDTH=32
-MEM_FILE=../../tb/rom.mi
+MEM_FILE=../../test/rom.mi

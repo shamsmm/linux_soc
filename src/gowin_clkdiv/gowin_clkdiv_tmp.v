@@ -5,18 +5,15 @@
 //Part Number: GW1NR-LV9QN88PC6/I5
 //Device: GW1NR-9
 //Device Version: C
-//Created Time: Thu Jun  5 22:08:29 2025
+//Created Time: Thu Jun  5 21:56:59 2025
 
 //Change the instance name and port connections to the signal names
 //--------Copy here to design--------
 
-    Gowin_pROM your_instance_name(
-        .dout(dout), //output [31:0] dout
-        .clk(clk), //input clk
-        .oce(oce), //input oce
-        .ce(ce), //input ce
-        .reset(reset), //input reset
-        .ad(ad) //input [9:0] ad
+    Gowin_CLKDIV your_instance_name(
+        .clkout(clkout), //output clkout
+        .hclkin(hclkin), //input hclkin
+        .resetn(resetn) //input resetn
     );
 
 //--------Copy end-------------------

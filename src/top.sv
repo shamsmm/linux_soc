@@ -1,7 +1,15 @@
 module top(
-    input bit clk,
+    input bit sysclk,
     input bit rst_n,
     inout [7:0] gpio
+);
+
+bit clk;
+
+Gowin_CLKDIV divider (
+    .clkout(clk), //output clkout
+    .hclkin(sysclk), //input hclkin
+    .resetn(rst_n) //input resetn
 );
 
 // riscv32 core-0 master interfaces to I-bus and D-bus

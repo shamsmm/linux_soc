@@ -1,10 +1,12 @@
+import bus_if_types_pkg::*;
+
 // byte accessed, 4-byte aligned 8-bit gpio
 // TODO: interrupts
 module gpio_wrapped(slave_bus_if.slave bus, input bit clk, inout [7:0] gpio);
 
 genvar i;
 generate
-  for (i = 0; i < 8; i = i + 1) begin
+  for (i = 0; i < 8; i = i + 1) begin : io_buffer_gen
     IOBUF pin (
       .I    (output_val[i]),      // Input data
       .O    (input_val[i]),       // Output data
@@ -22,6 +24,7 @@ logic [7:0] output_val;
 
 always_comb begin
     bus.bdone = 1'b1; // all thing take one clock cycle
+    bus.rdata = 32'b0;
 
     case(bus.addr[7:0])
         8'h00: bus.rdata = {24'b0, input_val};
@@ -32,7 +35,7 @@ always_comb begin
 end
 
 always_ff @( posedge clk ) begin
-    if (bus.ss) begin
+    if (bus.ss && bus.ttype == WRITE) begin
         case(bus.addr[7:0])
             8'h04: input_en <= bus.wdata[7:0];
             8'h08: output_en <= bus.wdata[7:0];

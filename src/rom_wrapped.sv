@@ -12,7 +12,7 @@ Gowin_pROM wrapped_mem(
     .oce(1'b1), //input oce
     .ce(bus.ss), //input ce
     .reset(1'b0), //input reset
-    .ad(bus.addr[9:0]) //input [9:0] ad
+    .ad(bus.addr[11:2]) //input [9:0] ad
 );
 
 endmodule
