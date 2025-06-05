@@ -1,0 +1,15 @@
+[General]
+ipc_version=4
+file=gowin_prom
+module=Gowin_pROM
+target_device=gw1nr9c-004
+type=ram_prom
+version=1.0
+
+[Config]
+DEPTH=1023
+LANG=0
+READ=1
+RESET_MODE=true
+WIDTH=32
+MEM_FILE=../../tb/rom.mi

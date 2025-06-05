@@ -1,0 +1,24 @@
+-series GW1NR
+-device GW1NR-9
+-device_version C
+-package QFN88P
+-part_number GW1NR-LV9QN88PC6/I5
+
+
+-mod_name Gowin_DPB
+-file_name gowin_dpb
+-path /home/shams/W/Digital/Projects/linux_soc/src/gowin_dpb/
+-type RAM_DP
+-file_type vlg
+-bram_b true
+-dev_type GW1NR-9C
+-depth_0 4096
+-depth_1 4096
+-width_0 32
+-width_1 32
+-read_mode_0 pipeline
+-read_mode_1 pipeline
+-write_mode_0 normal
+-write_mode_1 normal
+-speed true
+-reset_mode sync
