@@ -216,77 +216,99 @@
                 <Signal>dbus_if_core0.tsize[1]</Signal>
                 <Signal>dbus_if_core0.tsize[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="ibus_if_rom0.rdata[31:0]">
-                <Signal>ibus_if_rom0.rdata[31]</Signal>
-                <Signal>ibus_if_rom0.rdata[30]</Signal>
-                <Signal>ibus_if_rom0.rdata[29]</Signal>
-                <Signal>ibus_if_rom0.rdata[28]</Signal>
-                <Signal>ibus_if_rom0.rdata[27]</Signal>
-                <Signal>ibus_if_rom0.rdata[26]</Signal>
-                <Signal>ibus_if_rom0.rdata[25]</Signal>
-                <Signal>ibus_if_rom0.rdata[24]</Signal>
-                <Signal>ibus_if_rom0.rdata[23]</Signal>
-                <Signal>ibus_if_rom0.rdata[22]</Signal>
-                <Signal>ibus_if_rom0.rdata[21]</Signal>
-                <Signal>ibus_if_rom0.rdata[20]</Signal>
-                <Signal>ibus_if_rom0.rdata[19]</Signal>
-                <Signal>ibus_if_rom0.rdata[18]</Signal>
-                <Signal>ibus_if_rom0.rdata[17]</Signal>
-                <Signal>ibus_if_rom0.rdata[16]</Signal>
-                <Signal>ibus_if_rom0.rdata[15]</Signal>
-                <Signal>ibus_if_rom0.rdata[14]</Signal>
-                <Signal>ibus_if_rom0.rdata[13]</Signal>
-                <Signal>ibus_if_rom0.rdata[12]</Signal>
-                <Signal>ibus_if_rom0.rdata[11]</Signal>
-                <Signal>ibus_if_rom0.rdata[10]</Signal>
-                <Signal>ibus_if_rom0.rdata[9]</Signal>
-                <Signal>ibus_if_rom0.rdata[8]</Signal>
-                <Signal>ibus_if_rom0.rdata[7]</Signal>
-                <Signal>ibus_if_rom0.rdata[6]</Signal>
-                <Signal>ibus_if_rom0.rdata[5]</Signal>
-                <Signal>ibus_if_rom0.rdata[4]</Signal>
-                <Signal>ibus_if_rom0.rdata[3]</Signal>
-                <Signal>ibus_if_rom0.rdata[2]</Signal>
-                <Signal>ibus_if_rom0.rdata[1]</Signal>
-                <Signal>ibus_if_rom0.rdata[0]</Signal>
+            <Bus capture_enable="true" name="dbus_if_gpio0.wdata[31:0]">
+                <Signal>dbus_if_gpio0.wdata[31]</Signal>
+                <Signal>dbus_if_gpio0.wdata[30]</Signal>
+                <Signal>dbus_if_gpio0.wdata[29]</Signal>
+                <Signal>dbus_if_gpio0.wdata[28]</Signal>
+                <Signal>dbus_if_gpio0.wdata[27]</Signal>
+                <Signal>dbus_if_gpio0.wdata[26]</Signal>
+                <Signal>dbus_if_gpio0.wdata[25]</Signal>
+                <Signal>dbus_if_gpio0.wdata[24]</Signal>
+                <Signal>dbus_if_gpio0.wdata[23]</Signal>
+                <Signal>dbus_if_gpio0.wdata[22]</Signal>
+                <Signal>dbus_if_gpio0.wdata[21]</Signal>
+                <Signal>dbus_if_gpio0.wdata[20]</Signal>
+                <Signal>dbus_if_gpio0.wdata[19]</Signal>
+                <Signal>dbus_if_gpio0.wdata[18]</Signal>
+                <Signal>dbus_if_gpio0.wdata[17]</Signal>
+                <Signal>dbus_if_gpio0.wdata[16]</Signal>
+                <Signal>dbus_if_gpio0.wdata[15]</Signal>
+                <Signal>dbus_if_gpio0.wdata[14]</Signal>
+                <Signal>dbus_if_gpio0.wdata[13]</Signal>
+                <Signal>dbus_if_gpio0.wdata[12]</Signal>
+                <Signal>dbus_if_gpio0.wdata[11]</Signal>
+                <Signal>dbus_if_gpio0.wdata[10]</Signal>
+                <Signal>dbus_if_gpio0.wdata[9]</Signal>
+                <Signal>dbus_if_gpio0.wdata[8]</Signal>
+                <Signal>dbus_if_gpio0.wdata[7]</Signal>
+                <Signal>dbus_if_gpio0.wdata[6]</Signal>
+                <Signal>dbus_if_gpio0.wdata[5]</Signal>
+                <Signal>dbus_if_gpio0.wdata[4]</Signal>
+                <Signal>dbus_if_gpio0.wdata[3]</Signal>
+                <Signal>dbus_if_gpio0.wdata[2]</Signal>
+                <Signal>dbus_if_gpio0.wdata[1]</Signal>
+                <Signal>dbus_if_gpio0.wdata[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="ibus_if_rom0.addr[31:0]">
-                <Signal>ibus_if_rom0.addr[31]</Signal>
-                <Signal>ibus_if_rom0.addr[30]</Signal>
-                <Signal>ibus_if_rom0.addr[29]</Signal>
-                <Signal>ibus_if_rom0.addr[28]</Signal>
-                <Signal>ibus_if_rom0.addr[27]</Signal>
-                <Signal>ibus_if_rom0.addr[26]</Signal>
-                <Signal>ibus_if_rom0.addr[25]</Signal>
-                <Signal>ibus_if_rom0.addr[24]</Signal>
-                <Signal>ibus_if_rom0.addr[23]</Signal>
-                <Signal>ibus_if_rom0.addr[22]</Signal>
-                <Signal>ibus_if_rom0.addr[21]</Signal>
-                <Signal>ibus_if_rom0.addr[20]</Signal>
-                <Signal>ibus_if_rom0.addr[19]</Signal>
-                <Signal>ibus_if_rom0.addr[18]</Signal>
-                <Signal>ibus_if_rom0.addr[17]</Signal>
-                <Signal>ibus_if_rom0.addr[16]</Signal>
-                <Signal>ibus_if_rom0.addr[15]</Signal>
-                <Signal>ibus_if_rom0.addr[14]</Signal>
-                <Signal>ibus_if_rom0.addr[13]</Signal>
-                <Signal>ibus_if_rom0.addr[12]</Signal>
-                <Signal>ibus_if_rom0.addr[11]</Signal>
-                <Signal>ibus_if_rom0.addr[10]</Signal>
-                <Signal>ibus_if_rom0.addr[9]</Signal>
-                <Signal>ibus_if_rom0.addr[8]</Signal>
-                <Signal>ibus_if_rom0.addr[7]</Signal>
-                <Signal>ibus_if_rom0.addr[6]</Signal>
-                <Signal>ibus_if_rom0.addr[5]</Signal>
-                <Signal>ibus_if_rom0.addr[4]</Signal>
-                <Signal>ibus_if_rom0.addr[3]</Signal>
-                <Signal>ibus_if_rom0.addr[2]</Signal>
-                <Signal>ibus_if_rom0.addr[1]</Signal>
-                <Signal>ibus_if_rom0.addr[0]</Signal>
+            <Bus capture_enable="true" name="dbus_if_gpio0.addr[31:0]">
+                <Signal>dbus_if_gpio0.addr[31]</Signal>
+                <Signal>dbus_if_gpio0.addr[30]</Signal>
+                <Signal>dbus_if_gpio0.addr[29]</Signal>
+                <Signal>dbus_if_gpio0.addr[28]</Signal>
+                <Signal>dbus_if_gpio0.addr[27]</Signal>
+                <Signal>dbus_if_gpio0.addr[26]</Signal>
+                <Signal>dbus_if_gpio0.addr[25]</Signal>
+                <Signal>dbus_if_gpio0.addr[24]</Signal>
+                <Signal>dbus_if_gpio0.addr[23]</Signal>
+                <Signal>dbus_if_gpio0.addr[22]</Signal>
+                <Signal>dbus_if_gpio0.addr[21]</Signal>
+                <Signal>dbus_if_gpio0.addr[20]</Signal>
+                <Signal>dbus_if_gpio0.addr[19]</Signal>
+                <Signal>dbus_if_gpio0.addr[18]</Signal>
+                <Signal>dbus_if_gpio0.addr[17]</Signal>
+                <Signal>dbus_if_gpio0.addr[16]</Signal>
+                <Signal>dbus_if_gpio0.addr[15]</Signal>
+                <Signal>dbus_if_gpio0.addr[14]</Signal>
+                <Signal>dbus_if_gpio0.addr[13]</Signal>
+                <Signal>dbus_if_gpio0.addr[12]</Signal>
+                <Signal>dbus_if_gpio0.addr[11]</Signal>
+                <Signal>dbus_if_gpio0.addr[10]</Signal>
+                <Signal>dbus_if_gpio0.addr[9]</Signal>
+                <Signal>dbus_if_gpio0.addr[8]</Signal>
+                <Signal>dbus_if_gpio0.addr[7]</Signal>
+                <Signal>dbus_if_gpio0.addr[6]</Signal>
+                <Signal>dbus_if_gpio0.addr[5]</Signal>
+                <Signal>dbus_if_gpio0.addr[4]</Signal>
+                <Signal>dbus_if_gpio0.addr[3]</Signal>
+                <Signal>dbus_if_gpio0.addr[2]</Signal>
+                <Signal>dbus_if_gpio0.addr[1]</Signal>
+                <Signal>dbus_if_gpio0.addr[0]</Signal>
             </Bus>
-            <Signal capture_enable="true">ibus_if_rom0.bdone</Signal>
-            <Signal capture_enable="true">ibus_if_rom0.bstart</Signal>
-            <Signal capture_enable="true">ibus_if_rom0.ss</Signal>
+            <Bus capture_enable="true" name="dbus_if_gpio0.tsize[1:0]">
+                <Signal>dbus_if_gpio0.tsize[1]</Signal>
+                <Signal>dbus_if_gpio0.tsize[0]</Signal>
+            </Bus>
+            <Signal capture_enable="true">dbus_if_gpio0.ttype</Signal>
+            <Bus capture_enable="true" name="gpio0/output_en[7:0]">
+                <Signal>gpio0/output_en[7]</Signal>
+                <Signal>gpio0/output_en[6]</Signal>
+                <Signal>gpio0/output_en[5]</Signal>
+                <Signal>gpio0/output_en[4]</Signal>
+                <Signal>gpio0/output_en[3]</Signal>
+                <Signal>gpio0/output_en[2]</Signal>
+                <Signal>gpio0/output_en[1]</Signal>
+                <Signal>gpio0/output_en[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="gpio0/output_val[7:0]">
+                <Signal>gpio0/output_val[7]</Signal>
+                <Signal>gpio0/output_val[6]</Signal>
+                <Signal>gpio0/output_val[5]</Signal>
+                <Signal>gpio0/output_val[4]</Signal>
+                <Signal>gpio0/output_val[3]</Signal>
+                <Signal>gpio0/output_val[2]</Signal>
+                <Signal>gpio0/output_val[1]</Signal>
+                <Signal>gpio0/output_val[0]</Signal>
+            </Bus>
         </SignalList>
         <Triggers>
             <Trigger index="0">
@@ -332,5 +354,5 @@
             <Expression>M0</Expression>
         </Expressions>
     </AoCore>
-    <GAO_ID>0100000100110110</GAO_ID>
+    <GAO_ID>1111101110011101</GAO_ID>
 </GAO_CONFIG>
