@@ -1,0 +1,336 @@
+<?xml version="1" encoding="UTF-8"?>
+<GAO_CONFIG>
+    <Version>3.0</Version>
+    <Mode>Standard</Mode>
+    <AoCore index="0" sample_clock="sysclk" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="0" module_name="top" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
+        <SignalList>
+            <Bus capture_enable="true" name="core0/pc[31:0]">
+                <Signal>core0/pc[31]</Signal>
+                <Signal>core0/pc[30]</Signal>
+                <Signal>core0/pc[29]</Signal>
+                <Signal>core0/pc[28]</Signal>
+                <Signal>core0/pc[27]</Signal>
+                <Signal>core0/pc[26]</Signal>
+                <Signal>core0/pc[25]</Signal>
+                <Signal>core0/pc[24]</Signal>
+                <Signal>core0/pc[23]</Signal>
+                <Signal>core0/pc[22]</Signal>
+                <Signal>core0/pc[21]</Signal>
+                <Signal>core0/pc[20]</Signal>
+                <Signal>core0/pc[19]</Signal>
+                <Signal>core0/pc[18]</Signal>
+                <Signal>core0/pc[17]</Signal>
+                <Signal>core0/pc[16]</Signal>
+                <Signal>core0/pc[15]</Signal>
+                <Signal>core0/pc[14]</Signal>
+                <Signal>core0/pc[13]</Signal>
+                <Signal>core0/pc[12]</Signal>
+                <Signal>core0/pc[11]</Signal>
+                <Signal>core0/pc[10]</Signal>
+                <Signal>core0/pc[9]</Signal>
+                <Signal>core0/pc[8]</Signal>
+                <Signal>core0/pc[7]</Signal>
+                <Signal>core0/pc[6]</Signal>
+                <Signal>core0/pc[5]</Signal>
+                <Signal>core0/pc[4]</Signal>
+                <Signal>core0/pc[3]</Signal>
+                <Signal>core0/pc[2]</Signal>
+                <Signal>core0/pc[1]</Signal>
+                <Signal>core0/pc[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="core0/state[1:0]">
+                <Signal>core0/state[1]</Signal>
+                <Signal>core0/state[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="ibus_if_core0.rdata[31:0]">
+                <Signal>ibus_if_core0.rdata[31]</Signal>
+                <Signal>ibus_if_core0.rdata[30]</Signal>
+                <Signal>ibus_if_core0.rdata[29]</Signal>
+                <Signal>ibus_if_core0.rdata[28]</Signal>
+                <Signal>ibus_if_core0.rdata[27]</Signal>
+                <Signal>ibus_if_core0.rdata[26]</Signal>
+                <Signal>ibus_if_core0.rdata[25]</Signal>
+                <Signal>ibus_if_core0.rdata[24]</Signal>
+                <Signal>ibus_if_core0.rdata[23]</Signal>
+                <Signal>ibus_if_core0.rdata[22]</Signal>
+                <Signal>ibus_if_core0.rdata[21]</Signal>
+                <Signal>ibus_if_core0.rdata[20]</Signal>
+                <Signal>ibus_if_core0.rdata[19]</Signal>
+                <Signal>ibus_if_core0.rdata[18]</Signal>
+                <Signal>ibus_if_core0.rdata[17]</Signal>
+                <Signal>ibus_if_core0.rdata[16]</Signal>
+                <Signal>ibus_if_core0.rdata[15]</Signal>
+                <Signal>ibus_if_core0.rdata[14]</Signal>
+                <Signal>ibus_if_core0.rdata[13]</Signal>
+                <Signal>ibus_if_core0.rdata[12]</Signal>
+                <Signal>ibus_if_core0.rdata[11]</Signal>
+                <Signal>ibus_if_core0.rdata[10]</Signal>
+                <Signal>ibus_if_core0.rdata[9]</Signal>
+                <Signal>ibus_if_core0.rdata[8]</Signal>
+                <Signal>ibus_if_core0.rdata[7]</Signal>
+                <Signal>ibus_if_core0.rdata[6]</Signal>
+                <Signal>ibus_if_core0.rdata[5]</Signal>
+                <Signal>ibus_if_core0.rdata[4]</Signal>
+                <Signal>ibus_if_core0.rdata[3]</Signal>
+                <Signal>ibus_if_core0.rdata[2]</Signal>
+                <Signal>ibus_if_core0.rdata[1]</Signal>
+                <Signal>ibus_if_core0.rdata[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="ibus_if_core0.addr[31:0]">
+                <Signal>ibus_if_core0.addr[31]</Signal>
+                <Signal>ibus_if_core0.addr[30]</Signal>
+                <Signal>ibus_if_core0.addr[29]</Signal>
+                <Signal>ibus_if_core0.addr[28]</Signal>
+                <Signal>ibus_if_core0.addr[27]</Signal>
+                <Signal>ibus_if_core0.addr[26]</Signal>
+                <Signal>ibus_if_core0.addr[25]</Signal>
+                <Signal>ibus_if_core0.addr[24]</Signal>
+                <Signal>ibus_if_core0.addr[23]</Signal>
+                <Signal>ibus_if_core0.addr[22]</Signal>
+                <Signal>ibus_if_core0.addr[21]</Signal>
+                <Signal>ibus_if_core0.addr[20]</Signal>
+                <Signal>ibus_if_core0.addr[19]</Signal>
+                <Signal>ibus_if_core0.addr[18]</Signal>
+                <Signal>ibus_if_core0.addr[17]</Signal>
+                <Signal>ibus_if_core0.addr[16]</Signal>
+                <Signal>ibus_if_core0.addr[15]</Signal>
+                <Signal>ibus_if_core0.addr[14]</Signal>
+                <Signal>ibus_if_core0.addr[13]</Signal>
+                <Signal>ibus_if_core0.addr[12]</Signal>
+                <Signal>ibus_if_core0.addr[11]</Signal>
+                <Signal>ibus_if_core0.addr[10]</Signal>
+                <Signal>ibus_if_core0.addr[9]</Signal>
+                <Signal>ibus_if_core0.addr[8]</Signal>
+                <Signal>ibus_if_core0.addr[7]</Signal>
+                <Signal>ibus_if_core0.addr[6]</Signal>
+                <Signal>ibus_if_core0.addr[5]</Signal>
+                <Signal>ibus_if_core0.addr[4]</Signal>
+                <Signal>ibus_if_core0.addr[3]</Signal>
+                <Signal>ibus_if_core0.addr[2]</Signal>
+                <Signal>ibus_if_core0.addr[1]</Signal>
+                <Signal>ibus_if_core0.addr[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="dbus_if_core0.wdata[31:0]">
+                <Signal>dbus_if_core0.wdata[31]</Signal>
+                <Signal>dbus_if_core0.wdata[30]</Signal>
+                <Signal>dbus_if_core0.wdata[29]</Signal>
+                <Signal>dbus_if_core0.wdata[28]</Signal>
+                <Signal>dbus_if_core0.wdata[27]</Signal>
+                <Signal>dbus_if_core0.wdata[26]</Signal>
+                <Signal>dbus_if_core0.wdata[25]</Signal>
+                <Signal>dbus_if_core0.wdata[24]</Signal>
+                <Signal>dbus_if_core0.wdata[23]</Signal>
+                <Signal>dbus_if_core0.wdata[22]</Signal>
+                <Signal>dbus_if_core0.wdata[21]</Signal>
+                <Signal>dbus_if_core0.wdata[20]</Signal>
+                <Signal>dbus_if_core0.wdata[19]</Signal>
+                <Signal>dbus_if_core0.wdata[18]</Signal>
+                <Signal>dbus_if_core0.wdata[17]</Signal>
+                <Signal>dbus_if_core0.wdata[16]</Signal>
+                <Signal>dbus_if_core0.wdata[15]</Signal>
+                <Signal>dbus_if_core0.wdata[14]</Signal>
+                <Signal>dbus_if_core0.wdata[13]</Signal>
+                <Signal>dbus_if_core0.wdata[12]</Signal>
+                <Signal>dbus_if_core0.wdata[11]</Signal>
+                <Signal>dbus_if_core0.wdata[10]</Signal>
+                <Signal>dbus_if_core0.wdata[9]</Signal>
+                <Signal>dbus_if_core0.wdata[8]</Signal>
+                <Signal>dbus_if_core0.wdata[7]</Signal>
+                <Signal>dbus_if_core0.wdata[6]</Signal>
+                <Signal>dbus_if_core0.wdata[5]</Signal>
+                <Signal>dbus_if_core0.wdata[4]</Signal>
+                <Signal>dbus_if_core0.wdata[3]</Signal>
+                <Signal>dbus_if_core0.wdata[2]</Signal>
+                <Signal>dbus_if_core0.wdata[1]</Signal>
+                <Signal>dbus_if_core0.wdata[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="dbus_if_core0.rdata[31:0]">
+                <Signal>dbus_if_core0.rdata[31]</Signal>
+                <Signal>dbus_if_core0.rdata[30]</Signal>
+                <Signal>dbus_if_core0.rdata[29]</Signal>
+                <Signal>dbus_if_core0.rdata[28]</Signal>
+                <Signal>dbus_if_core0.rdata[27]</Signal>
+                <Signal>dbus_if_core0.rdata[26]</Signal>
+                <Signal>dbus_if_core0.rdata[25]</Signal>
+                <Signal>dbus_if_core0.rdata[24]</Signal>
+                <Signal>dbus_if_core0.rdata[23]</Signal>
+                <Signal>dbus_if_core0.rdata[22]</Signal>
+                <Signal>dbus_if_core0.rdata[21]</Signal>
+                <Signal>dbus_if_core0.rdata[20]</Signal>
+                <Signal>dbus_if_core0.rdata[19]</Signal>
+                <Signal>dbus_if_core0.rdata[18]</Signal>
+                <Signal>dbus_if_core0.rdata[17]</Signal>
+                <Signal>dbus_if_core0.rdata[16]</Signal>
+                <Signal>dbus_if_core0.rdata[15]</Signal>
+                <Signal>dbus_if_core0.rdata[14]</Signal>
+                <Signal>dbus_if_core0.rdata[13]</Signal>
+                <Signal>dbus_if_core0.rdata[12]</Signal>
+                <Signal>dbus_if_core0.rdata[11]</Signal>
+                <Signal>dbus_if_core0.rdata[10]</Signal>
+                <Signal>dbus_if_core0.rdata[9]</Signal>
+                <Signal>dbus_if_core0.rdata[8]</Signal>
+                <Signal>dbus_if_core0.rdata[7]</Signal>
+                <Signal>dbus_if_core0.rdata[6]</Signal>
+                <Signal>dbus_if_core0.rdata[5]</Signal>
+                <Signal>dbus_if_core0.rdata[4]</Signal>
+                <Signal>dbus_if_core0.rdata[3]</Signal>
+                <Signal>dbus_if_core0.rdata[2]</Signal>
+                <Signal>dbus_if_core0.rdata[1]</Signal>
+                <Signal>dbus_if_core0.rdata[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="dbus_if_core0.addr[31:0]">
+                <Signal>dbus_if_core0.addr[31]</Signal>
+                <Signal>dbus_if_core0.addr[30]</Signal>
+                <Signal>dbus_if_core0.addr[29]</Signal>
+                <Signal>dbus_if_core0.addr[28]</Signal>
+                <Signal>dbus_if_core0.addr[27]</Signal>
+                <Signal>dbus_if_core0.addr[26]</Signal>
+                <Signal>dbus_if_core0.addr[25]</Signal>
+                <Signal>dbus_if_core0.addr[24]</Signal>
+                <Signal>dbus_if_core0.addr[23]</Signal>
+                <Signal>dbus_if_core0.addr[22]</Signal>
+                <Signal>dbus_if_core0.addr[21]</Signal>
+                <Signal>dbus_if_core0.addr[20]</Signal>
+                <Signal>dbus_if_core0.addr[19]</Signal>
+                <Signal>dbus_if_core0.addr[18]</Signal>
+                <Signal>dbus_if_core0.addr[17]</Signal>
+                <Signal>dbus_if_core0.addr[16]</Signal>
+                <Signal>dbus_if_core0.addr[15]</Signal>
+                <Signal>dbus_if_core0.addr[14]</Signal>
+                <Signal>dbus_if_core0.addr[13]</Signal>
+                <Signal>dbus_if_core0.addr[12]</Signal>
+                <Signal>dbus_if_core0.addr[11]</Signal>
+                <Signal>dbus_if_core0.addr[10]</Signal>
+                <Signal>dbus_if_core0.addr[9]</Signal>
+                <Signal>dbus_if_core0.addr[8]</Signal>
+                <Signal>dbus_if_core0.addr[7]</Signal>
+                <Signal>dbus_if_core0.addr[6]</Signal>
+                <Signal>dbus_if_core0.addr[5]</Signal>
+                <Signal>dbus_if_core0.addr[4]</Signal>
+                <Signal>dbus_if_core0.addr[3]</Signal>
+                <Signal>dbus_if_core0.addr[2]</Signal>
+                <Signal>dbus_if_core0.addr[1]</Signal>
+                <Signal>dbus_if_core0.addr[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="dbus_if_core0.tsize[1:0]">
+                <Signal>dbus_if_core0.tsize[1]</Signal>
+                <Signal>dbus_if_core0.tsize[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="ibus_if_rom0.rdata[31:0]">
+                <Signal>ibus_if_rom0.rdata[31]</Signal>
+                <Signal>ibus_if_rom0.rdata[30]</Signal>
+                <Signal>ibus_if_rom0.rdata[29]</Signal>
+                <Signal>ibus_if_rom0.rdata[28]</Signal>
+                <Signal>ibus_if_rom0.rdata[27]</Signal>
+                <Signal>ibus_if_rom0.rdata[26]</Signal>
+                <Signal>ibus_if_rom0.rdata[25]</Signal>
+                <Signal>ibus_if_rom0.rdata[24]</Signal>
+                <Signal>ibus_if_rom0.rdata[23]</Signal>
+                <Signal>ibus_if_rom0.rdata[22]</Signal>
+                <Signal>ibus_if_rom0.rdata[21]</Signal>
+                <Signal>ibus_if_rom0.rdata[20]</Signal>
+                <Signal>ibus_if_rom0.rdata[19]</Signal>
+                <Signal>ibus_if_rom0.rdata[18]</Signal>
+                <Signal>ibus_if_rom0.rdata[17]</Signal>
+                <Signal>ibus_if_rom0.rdata[16]</Signal>
+                <Signal>ibus_if_rom0.rdata[15]</Signal>
+                <Signal>ibus_if_rom0.rdata[14]</Signal>
+                <Signal>ibus_if_rom0.rdata[13]</Signal>
+                <Signal>ibus_if_rom0.rdata[12]</Signal>
+                <Signal>ibus_if_rom0.rdata[11]</Signal>
+                <Signal>ibus_if_rom0.rdata[10]</Signal>
+                <Signal>ibus_if_rom0.rdata[9]</Signal>
+                <Signal>ibus_if_rom0.rdata[8]</Signal>
+                <Signal>ibus_if_rom0.rdata[7]</Signal>
+                <Signal>ibus_if_rom0.rdata[6]</Signal>
+                <Signal>ibus_if_rom0.rdata[5]</Signal>
+                <Signal>ibus_if_rom0.rdata[4]</Signal>
+                <Signal>ibus_if_rom0.rdata[3]</Signal>
+                <Signal>ibus_if_rom0.rdata[2]</Signal>
+                <Signal>ibus_if_rom0.rdata[1]</Signal>
+                <Signal>ibus_if_rom0.rdata[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="ibus_if_rom0.addr[31:0]">
+                <Signal>ibus_if_rom0.addr[31]</Signal>
+                <Signal>ibus_if_rom0.addr[30]</Signal>
+                <Signal>ibus_if_rom0.addr[29]</Signal>
+                <Signal>ibus_if_rom0.addr[28]</Signal>
+                <Signal>ibus_if_rom0.addr[27]</Signal>
+                <Signal>ibus_if_rom0.addr[26]</Signal>
+                <Signal>ibus_if_rom0.addr[25]</Signal>
+                <Signal>ibus_if_rom0.addr[24]</Signal>
+                <Signal>ibus_if_rom0.addr[23]</Signal>
+                <Signal>ibus_if_rom0.addr[22]</Signal>
+                <Signal>ibus_if_rom0.addr[21]</Signal>
+                <Signal>ibus_if_rom0.addr[20]</Signal>
+                <Signal>ibus_if_rom0.addr[19]</Signal>
+                <Signal>ibus_if_rom0.addr[18]</Signal>
+                <Signal>ibus_if_rom0.addr[17]</Signal>
+                <Signal>ibus_if_rom0.addr[16]</Signal>
+                <Signal>ibus_if_rom0.addr[15]</Signal>
+                <Signal>ibus_if_rom0.addr[14]</Signal>
+                <Signal>ibus_if_rom0.addr[13]</Signal>
+                <Signal>ibus_if_rom0.addr[12]</Signal>
+                <Signal>ibus_if_rom0.addr[11]</Signal>
+                <Signal>ibus_if_rom0.addr[10]</Signal>
+                <Signal>ibus_if_rom0.addr[9]</Signal>
+                <Signal>ibus_if_rom0.addr[8]</Signal>
+                <Signal>ibus_if_rom0.addr[7]</Signal>
+                <Signal>ibus_if_rom0.addr[6]</Signal>
+                <Signal>ibus_if_rom0.addr[5]</Signal>
+                <Signal>ibus_if_rom0.addr[4]</Signal>
+                <Signal>ibus_if_rom0.addr[3]</Signal>
+                <Signal>ibus_if_rom0.addr[2]</Signal>
+                <Signal>ibus_if_rom0.addr[1]</Signal>
+                <Signal>ibus_if_rom0.addr[0]</Signal>
+            </Bus>
+            <Signal capture_enable="true">ibus_if_rom0.bdone</Signal>
+            <Signal capture_enable="true">ibus_if_rom0.bstart</Signal>
+            <Signal capture_enable="true">ibus_if_rom0.ss</Signal>
+        </SignalList>
+        <Triggers>
+            <Trigger index="0">
+                <SignalList>
+                    <Signal>clk</Signal>
+                </SignalList>
+            </Trigger>
+            <Trigger index="1"/>
+            <Trigger index="2"/>
+            <Trigger index="3"/>
+            <Trigger index="4"/>
+            <Trigger index="5"/>
+            <Trigger index="6"/>
+            <Trigger index="7"/>
+            <Trigger index="8"/>
+            <Trigger index="9"/>
+            <Trigger index="10"/>
+            <Trigger index="11"/>
+            <Trigger index="12"/>
+            <Trigger index="13"/>
+            <Trigger index="14"/>
+            <Trigger index="15"/>
+        </Triggers>
+        <MatchUnits>
+            <MatchUnit index="0" enabled="1" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="R" value1="0" trigger="0"/>
+            <MatchUnit index="1" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="2" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="3" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="4" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="5" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="6" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="7" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="8" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="9" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="10" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="11" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="12" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="13" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="14" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="15" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+        </MatchUnits>
+        <Expressions type="Static">
+            <Expression>M0</Expression>
+        </Expressions>
+    </AoCore>
+    <GAO_ID>0100000100110110</GAO_ID>
+</GAO_CONFIG>

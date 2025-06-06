@@ -10,5 +10,5 @@
 -path /home/shams/W/Digital/Projects/linux_soc/src/gowin_clkdiv/
 -type CLKDIV
 -file_type vlg
--division_factor 2
+-division_factor 8
 -calib false

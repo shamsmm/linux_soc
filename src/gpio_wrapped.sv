@@ -2,7 +2,7 @@ import bus_if_types_pkg::*;
 
 // byte accessed, 4-byte aligned 8-bit gpio
 // TODO: interrupts
-module gpio_wrapped(slave_bus_if.slave bus, input bit clk, inout [7:0] gpio);
+module gpio_wrapped(slave_bus_if.slave bus, input bit clk, inout [7:0] gpio, input bit rst_n);
 
 genvar i;
 generate
@@ -34,8 +34,13 @@ always_comb begin
     endcase
 end
 
-always_ff @( posedge clk ) begin
-    if (bus.ss && bus.ttype == WRITE) begin
+always_ff @( posedge clk, negedge rst_n ) begin
+    if (!rst_n) begin
+        input_en <= 8'hFF;
+        output_en <= 8'b00;
+        output_val <= 8'b00;
+    end
+    else if (bus.ss && bus.ttype == WRITE) begin
         case(bus.addr[7:0])
             8'h04: input_en <= bus.wdata[7:0];
             8'h08: output_en <= bus.wdata[7:0];

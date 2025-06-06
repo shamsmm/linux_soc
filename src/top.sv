@@ -6,7 +6,7 @@ module top(
 
 bit clk;
 
-Gowin_CLKDIV divider (
+Gowin_CLKDIV divider0 (
     .clkout(clk), //output clkout
     .hclkin(sysclk), //input hclkin
     .resetn(rst_n) //input resetn
@@ -30,13 +30,13 @@ slave_bus_if dbus_if_gpio0(clk, rst_n);
 rv_core #(.INITIAL_PC(32'h2000_0000)) core0(.ibus(ibus_if_core0), .dbus(dbus_if_core0), .clk(clk), .rst_n(rst_n));
 
 // dual port memory
-memory_wrapped mem0(.ibus(ibus_if_mem0), .dbus(dbus_if_mem0), .clk(clk));
+memory_wrapped mem0(.ibus(ibus_if_mem0), .dbus(dbus_if_mem0), .clk(clk), .rst_n(rst_n));
 
 // rom single port memory
-rom_wrapped rom0(.bus(ibus_if_rom0), .clk(clk));
+rom_wrapped rom0(.bus(ibus_if_rom0), .clk(clk), .rst_n(rst_n));
 
 // gpio memory mapped
-gpio_wrapped gpio0(.bus(dbus_if_gpio0), .clk(clk), .gpio(gpio));
+gpio_wrapped gpio0(.bus(dbus_if_gpio0), .clk(clk), .gpio(gpio), .rst_n(rst_n));
 
 // interconnect
 

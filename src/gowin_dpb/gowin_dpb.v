@@ -67,8 +67,8 @@ DPB dpb_inst_0 (
     .DIB({gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,dinb[3:0]})
 );
 
-defparam dpb_inst_0.READ_MODE0 = 1'b1;
-defparam dpb_inst_0.READ_MODE1 = 1'b1;
+defparam dpb_inst_0.READ_MODE0 = 1'b0;
+defparam dpb_inst_0.READ_MODE1 = 1'b0;
 defparam dpb_inst_0.WRITE_MODE0 = 2'b00;
 defparam dpb_inst_0.WRITE_MODE1 = 2'b00;
 defparam dpb_inst_0.BIT_WIDTH_0 = 4;
@@ -98,8 +98,8 @@ DPB dpb_inst_1 (
     .DIB({gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,dinb[7:4]})
 );
 
-defparam dpb_inst_1.READ_MODE0 = 1'b1;
-defparam dpb_inst_1.READ_MODE1 = 1'b1;
+defparam dpb_inst_1.READ_MODE0 = 1'b0;
+defparam dpb_inst_1.READ_MODE1 = 1'b0;
 defparam dpb_inst_1.WRITE_MODE0 = 2'b00;
 defparam dpb_inst_1.WRITE_MODE1 = 2'b00;
 defparam dpb_inst_1.BIT_WIDTH_0 = 4;
@@ -129,8 +129,8 @@ DPB dpb_inst_2 (
     .DIB({gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,dinb[11:8]})
 );
 
-defparam dpb_inst_2.READ_MODE0 = 1'b1;
-defparam dpb_inst_2.READ_MODE1 = 1'b1;
+defparam dpb_inst_2.READ_MODE0 = 1'b0;
+defparam dpb_inst_2.READ_MODE1 = 1'b0;
 defparam dpb_inst_2.WRITE_MODE0 = 2'b00;
 defparam dpb_inst_2.WRITE_MODE1 = 2'b00;
 defparam dpb_inst_2.BIT_WIDTH_0 = 4;
@@ -160,8 +160,8 @@ DPB dpb_inst_3 (
     .DIB({gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,dinb[15:12]})
 );
 
-defparam dpb_inst_3.READ_MODE0 = 1'b1;
-defparam dpb_inst_3.READ_MODE1 = 1'b1;
+defparam dpb_inst_3.READ_MODE0 = 1'b0;
+defparam dpb_inst_3.READ_MODE1 = 1'b0;
 defparam dpb_inst_3.WRITE_MODE0 = 2'b00;
 defparam dpb_inst_3.WRITE_MODE1 = 2'b00;
 defparam dpb_inst_3.BIT_WIDTH_0 = 4;
@@ -191,8 +191,8 @@ DPB dpb_inst_4 (
     .DIB({gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,dinb[19:16]})
 );
 
-defparam dpb_inst_4.READ_MODE0 = 1'b1;
-defparam dpb_inst_4.READ_MODE1 = 1'b1;
+defparam dpb_inst_4.READ_MODE0 = 1'b0;
+defparam dpb_inst_4.READ_MODE1 = 1'b0;
 defparam dpb_inst_4.WRITE_MODE0 = 2'b00;
 defparam dpb_inst_4.WRITE_MODE1 = 2'b00;
 defparam dpb_inst_4.BIT_WIDTH_0 = 4;
@@ -222,8 +222,8 @@ DPB dpb_inst_5 (
     .DIB({gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,dinb[23:20]})
 );
 
-defparam dpb_inst_5.READ_MODE0 = 1'b1;
-defparam dpb_inst_5.READ_MODE1 = 1'b1;
+defparam dpb_inst_5.READ_MODE0 = 1'b0;
+defparam dpb_inst_5.READ_MODE1 = 1'b0;
 defparam dpb_inst_5.WRITE_MODE0 = 2'b00;
 defparam dpb_inst_5.WRITE_MODE1 = 2'b00;
 defparam dpb_inst_5.BIT_WIDTH_0 = 4;
@@ -253,8 +253,8 @@ DPB dpb_inst_6 (
     .DIB({gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,dinb[27:24]})
 );
 
-defparam dpb_inst_6.READ_MODE0 = 1'b1;
-defparam dpb_inst_6.READ_MODE1 = 1'b1;
+defparam dpb_inst_6.READ_MODE0 = 1'b0;
+defparam dpb_inst_6.READ_MODE1 = 1'b0;
 defparam dpb_inst_6.WRITE_MODE0 = 2'b00;
 defparam dpb_inst_6.WRITE_MODE1 = 2'b00;
 defparam dpb_inst_6.BIT_WIDTH_0 = 4;
@@ -284,8 +284,8 @@ DPB dpb_inst_7 (
     .DIB({gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,gw_gnd,dinb[31:28]})
 );
 
-defparam dpb_inst_7.READ_MODE0 = 1'b1;
-defparam dpb_inst_7.READ_MODE1 = 1'b1;
+defparam dpb_inst_7.READ_MODE0 = 1'b0;
+defparam dpb_inst_7.READ_MODE1 = 1'b0;
 defparam dpb_inst_7.WRITE_MODE0 = 2'b00;
 defparam dpb_inst_7.WRITE_MODE1 = 2'b00;
 defparam dpb_inst_7.BIT_WIDTH_0 = 4;
