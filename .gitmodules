@@ -1,11 +1,11 @@
 [submodule "interconnect"]
     path = src/interconnect
-    url = ./src/interconnect
+    url = https://github.com/shamsmm/linux_soc_interconnect
 
 [submodule "rv_core"]
     path = src/rv_core
-    url = ./src/rv_core
+    url = https://github.com/shamsmm/rv32
 
 [submodule "test"]
     path = test
-    url = ./test
+    url = https://github.com/shamsmm/linux_soc_test
