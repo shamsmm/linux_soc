@@ -37,7 +37,15 @@ slave_bus_if ibus_if_rom0(clk, rst_n);
 slave_bus_if dbus_if_gpio0(clk, rst_n);
 
 // riscv32 core-0
-rv_core #(.INITIAL_PC(32'h2000_0000)) core0(.ibus(ibus_if_core0), .dbus(dbus_if_core0), .clk(clk), .rst_n(rst_n));
+rv_core #(.INITIAL_PC(32'h2000_0000)) core0(
+    .ibus(ibus_if_core0),
+    .dbus(dbus_if_core0),
+    .haltreq(1'b0),
+    .resumereq(1'b0),
+    .resethaltreq(1'b0),
+    .clk(clk),
+    .rst_n(rst_n)
+);
 
 // dual port memory
 memory_wrapped mem0(.ibus(ibus_if_mem0), .dbus(dbus_if_mem0), .clk(clk), .rst_n(rst_n));
@@ -59,7 +67,7 @@ logic dmi;
 
 logic [8:0] chain = {rst_n, gpio}; // readonly
 
-dtm_jtag debug_transport(.tdi(dtm_tdi), .chain(chain), .tms(dtm_tms), .tclk(dtm_tclk), .dmi(dmi), .tdo(tdo), .tdo_en(tdo_en));
+dtm_jtag debug_transport(.tdi(dtm_tdi), .chain(chain), .trst(dtm_trst), .tms(dtm_tms), .tclk(dtm_tclk), .dmi(dmi), .tdo(tdo), .tdo_en(tdo_en));
 
 TBUF jtag_tdo (
   .I    (tdo),      // Input data

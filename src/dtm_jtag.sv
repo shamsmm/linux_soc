@@ -41,8 +41,6 @@ localparam IDCODE_VALUE = {
     1'b1            // LSB always 1
 };
 
-logic [31:0] idcode = IDCODE_VALUE; // readonly
-
 always_ff @(posedge tclk, negedge trst)
     if (!trst) begin
         instruction <= IDCODE;
@@ -56,7 +54,7 @@ always_ff @(posedge tclk, negedge trst)
             UPDATE_IR: instruction <= ir;
             CAPTURE_DR: begin
                 case(instruction)
-                    IDCODE: dr <= idcode;
+                    IDCODE: dr <= IDCODE_VALUE;
                     DMI:    dr <= 0; // TODO: connect to actual DMI
                     BYPASS: dr <= 0;
                 endcase
