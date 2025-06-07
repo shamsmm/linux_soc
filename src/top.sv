@@ -1,7 +1,17 @@
 module top(
+    // system clk and reset
     input bit sysclk,
     input bit rst_n,
-    inout [7:0] gpio
+    
+    // input/outputs
+    inout [7:0] gpio,
+
+    // debug transport module pins
+    input dtm_tdi,
+    input dtm_tms,
+    input dtm_tclk,
+    input dtm_trst,
+    inout dtm_tdo
 );
 
 bit clk;
@@ -42,6 +52,20 @@ gpio_wrapped gpio0(.bus(dbus_if_gpio0), .clk(clk), .gpio(gpio), .rst_n(rst_n));
 
 dbus_interconnect dbus_ic(.*);
 ibus_interconnect ibus_ic(.*);
+
+// Debug Transport and Debug Interface
+logic tdo, tdo_en;
+logic dmi;
+
+logic [8:0] chain = {rst_n, gpio}; // readonly
+
+dtm_jtag debug_transport(.tdi(dtm_tdi), .chain(chain), .tms(dtm_tms), .tclk(dtm_tclk), .dmi(dmi), .tdo(tdo), .tdo_en(tdo_en));
+
+TBUF jtag_tdo (
+  .I    (tdo),      // Input data
+  .O    (dtm_tdo),       // Output data
+  .OEN  (!tdo_en) // Active-low output enable
+);
 
 
 endmodule

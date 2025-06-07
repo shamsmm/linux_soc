@@ -5,6 +5,7 @@
     <Version>5</Version>
     <Device name="GW1NR-9C" pn="GW1NR-LV9QN88PC6/I5">gw1nr9c-004</Device>
     <FileList>
+        <File path="src/dtm_jtag.sv" type="file.verilog" enable="1"/>
         <File path="src/gowin_clkdiv/gowin_clkdiv.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_dpb/gowin_dpb.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_prom/gowin_prom.v" type="file.verilog" enable="1"/>
