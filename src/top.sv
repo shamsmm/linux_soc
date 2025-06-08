@@ -67,7 +67,7 @@ logic dmi;
 
 logic [8:0] chain = {rst_n, gpio}; // readonly
 
-dtm_jtag debug_transport(.tdi(dtm_tdi), .chain(chain), .trst(dtm_trst), .tms(dtm_tms), .tclk(dtm_tclk), .dmi(dmi), .tdo(tdo), .tdo_en(tdo_en));
+dtm_jtag debug_transport(.tdi(dtm_tdi), .trst(dtm_trst), .tms(dtm_tms), .tclk(dtm_tclk), .tdo(tdo), .tdo_en(tdo_en));
 
 TBUF jtag_tdo (
   .I    (tdo),      // Input data

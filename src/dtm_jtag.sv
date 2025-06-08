@@ -1,6 +1,6 @@
-module dtm_jtag(output logic tdo, tdo_en, input logic tclk, tdi, tms, trst, output logic dmi, input [8:0] chain);
+module dtm_jtag(output logic tdo, tdo_en, input logic tclk, tdi, tms, trst);
 
-assign tdo_en = (state == SHIFT_IR | state == SHIFT_DR);
+assign tdo_en = (state inside {SHIFT_IR, SHIFT_DR, EXIT1_IR, EXIT1_DR});
 logic next_tdo;
 
 typedef enum logic [3:0] {
@@ -24,8 +24,6 @@ typedef enum logic [3:0] {
 
 typedef enum logic [5:0] {
     BYPASS  = 6'b111111,
-    SAMPLE  = 6'b000010,
-    DMI     = 6'b101010,
     IDCODE  = 6'b000001
 } jtag_instruction_t;
 
@@ -35,12 +33,7 @@ logic [5:0] ir, instruction;
 logic [31:0] dr;
 logic [0:0] bypass;
 
-localparam IDCODE_VALUE = {
-    4'h1,           // Version
-    16'hBEEF,       // Part number 
-    11'h000,        // Manufacturer ID
-    1'b1            // LSB always 1
-};
+localparam IDCODE_VALUE = 32'h1BEEF001;
 
 always_ff @(negedge tclk, negedge trst)
     if (!trst) begin
@@ -49,7 +42,7 @@ always_ff @(negedge tclk, negedge trst)
     end else begin
         tdo <= next_tdo;
 
-        if (state == UPDATE_IR)
+        if (next_state == UPDATE_IR)
             instruction <= ir;
     end
 
@@ -60,26 +53,28 @@ always_ff @(posedge tclk, negedge trst)
         next_tdo <= 0;
         bypass <= 0;
     end else begin
-        case (state)
+        case (next_state)
+            TEST_LOGIC_RESET: begin
+                dr <= IDCODE_VALUE;
+                next_tdo <= 0;
+                bypass <= 0;
+            end
             CAPTURE_IR: ir <= 6'b0000_01;
             SHIFT_IR: begin
-                next_tdo <= ir[5];
-                ir <= {ir[4:0], tdi};
-            end
-            
+                next_tdo <= ir[0];
+                ir <= {tdi, ir[5:1]};
+            end  
             CAPTURE_DR: begin
                 case(instruction)
                     IDCODE: dr <= IDCODE_VALUE;
-                    DMI:    dr <= 0; // TODO: connect to actual DMI
                 endcase
             end
             SHIFT_DR: begin
                 case(instruction)
                     IDCODE: begin 
-                        next_tdo <= dr[31];
-                        dr <= {dr[30:0], tdi};
+                        next_tdo <= dr[0];
+                        dr <= {tdi, dr[31:1]};
                     end
-                    DMI:    dr <= 0; // TODO: connect to actual DMI
                     BYPASS: begin 
                         next_tdo <= bypass;
                         bypass <= tdi;
@@ -87,9 +82,6 @@ always_ff @(posedge tclk, negedge trst)
                 endcase
             end
             UPDATE_DR: begin
-                case(instruction)
-                    DMI:    dmi <= dr; // TODO: connect to actual DMI
-                endcase
             end
         endcase
     end
