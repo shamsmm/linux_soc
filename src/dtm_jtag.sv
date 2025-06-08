@@ -1,7 +1,6 @@
 module dtm_jtag(output logic tdo, tdo_en, input logic tclk, tdi, tms, trst);
 
 assign tdo_en = (state inside {SHIFT_IR, SHIFT_DR, EXIT1_IR, EXIT1_DR});
-logic next_tdo;
 
 typedef enum logic [3:0] {
     TEST_LOGIC_RESET = 4'h0,
