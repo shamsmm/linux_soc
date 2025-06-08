@@ -1,6 +1,7 @@
 module dtm_jtag(output logic tdo, tdo_en, input logic tclk, tdi, tms, trst, output logic dmi, input [8:0] chain);
 
 assign tdo_en = (state == SHIFT_IR | state == SHIFT_DR);
+logic next_tdo;
 
 typedef enum logic [3:0] {
     TEST_LOGIC_RESET = 4'h0,
@@ -32,7 +33,7 @@ jtag_state_t state, next_state;
 
 logic [5:0] ir, instruction;
 logic [31:0] dr;
-logic [0:0] bypass = 1'b0;
+logic [0:0] bypass;
 
 localparam IDCODE_VALUE = {
     4'h1,           // Version
@@ -41,27 +42,49 @@ localparam IDCODE_VALUE = {
     1'b1            // LSB always 1
 };
 
+always_ff @(negedge tclk, negedge trst)
+    if (!trst) begin
+        tdo <= 0;
+        instruction <= IDCODE;
+    end else begin
+        tdo <= next_tdo;
+
+        if (state == UPDATE_IR)
+            instruction <= ir;
+    end
+
+
 always_ff @(posedge tclk, negedge trst)
     if (!trst) begin
-        instruction <= IDCODE;
+        dr <= IDCODE_VALUE;
+        next_tdo <= 0;
+        bypass <= 0;
     end else begin
         case (state)
             CAPTURE_IR: ir <= 6'b0000_01;
             SHIFT_IR: begin
+                next_tdo <= ir[5];
                 ir <= {ir[4:0], tdi};
-                tdo <= ir[5];
             end
-            UPDATE_IR: instruction <= ir;
+            
             CAPTURE_DR: begin
                 case(instruction)
                     IDCODE: dr <= IDCODE_VALUE;
                     DMI:    dr <= 0; // TODO: connect to actual DMI
-                    BYPASS: dr <= 0;
                 endcase
             end
             SHIFT_DR: begin
-                dr <= {dr[30:0], tdi};
-                tdo <= dr[31];
+                case(instruction)
+                    IDCODE: begin 
+                        next_tdo <= dr[31];
+                        dr <= {dr[30:0], tdi};
+                    end
+                    DMI:    dr <= 0; // TODO: connect to actual DMI
+                    BYPASS: begin 
+                        next_tdo <= bypass;
+                        bypass <= tdi;
+                    end
+                endcase
             end
             UPDATE_DR: begin
                 case(instruction)
@@ -78,7 +101,9 @@ always_ff @(posedge tclk, negedge trst)
         state <= next_state;
 
 always_comb
-    case(state)
+    if (!trst)
+        next_state = TEST_LOGIC_RESET;
+    else case(state)
         TEST_LOGIC_RESET: 
             next_state = tms ? TEST_LOGIC_RESET : RUN_TEST_IDLE;            
         RUN_TEST_IDLE: 
