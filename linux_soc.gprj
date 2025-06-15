@@ -12,12 +12,17 @@
         <File path="src/gpio_wrapped.sv" type="file.verilog" enable="1"/>
         <File path="src/interconnect/dbus_interconnect.sv" type="file.verilog" enable="1"/>
         <File path="src/interconnect/ibus_interconnect.sv" type="file.verilog" enable="1"/>
+        <File path="src/interconnect/plic.sv" type="file.verilog" enable="1"/>
+        <File path="src/jtag.sv" type="file.verilog" enable="1"/>
         <File path="src/memory_wrapped.sv" type="file.verilog" enable="1"/>
         <File path="src/rom_wrapped.sv" type="file.verilog" enable="1"/>
         <File path="src/rv_core/alu.sv" type="file.verilog" enable="1"/>
         <File path="src/rv_core/bus_if.sv" type="file.verilog" enable="1"/>
         <File path="src/rv_core/bus_if_types_pkg.sv" type="file.verilog" enable="1"/>
+        <File path="src/rv_core/clint.sv" type="file.verilog" enable="1"/>
+        <File path="src/rv_core/csr.sv" type="file.verilog" enable="1"/>
         <File path="src/rv_core/cu.sv" type="file.verilog" enable="1"/>
+        <File path="src/rv_core/funct3.sv" type="file.verilog" enable="1"/>
         <File path="src/rv_core/instructions.sv" type="file.verilog" enable="1"/>
         <File path="src/rv_core/rf.sv" type="file.verilog" enable="1"/>
         <File path="src/rv_core/rv_core.sv" type="file.verilog" enable="1"/>

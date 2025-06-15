@@ -52,9 +52,9 @@ rv_core #(.INITIAL_PC(32'h2000_0000)) core0(
     .irq_timer(irq_timer0)
 );
 
-clint clint0(.irq_sw(irq_sw0), .irq_ext(irq_ext0), .irq_timer(irq_timer0))
+clint clint0(.irq_sw(irq_sw0), .irq_timer(irq_timer0));
 
-plic plic0();
+plic plic0(.irq_ext(irq_ext0));
 
 // dual port memory
 memory_wrapped mem0(.ibus(ibus_if_mem0), .dbus(dbus_if_mem0), .clk(clk), .rst_n(rst_n));
