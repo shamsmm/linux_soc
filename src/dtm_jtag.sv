@@ -24,7 +24,8 @@ typedef enum logic [3:0] {
 
 typedef enum logic [5:0] {
     BYPASS  = 6'b111111,
-    SAMPLE  = 6'h0,
+    SAMPLE  = 6'h000000,
+    DMI     = 6'b100001,
     IDCODE  = 6'b000001
 } jtag_instruction_t;
 
@@ -69,11 +70,16 @@ always_ff @(posedge tclk, negedge trst)
             CAPTURE_DR: begin
                 case(ir)
                     IDCODE: dr <= IDCODE_VALUE;
+                    SAMPLE: dr <= 32'h55555555; // TODO: connect to actual GPIO
                 endcase
             end
             SHIFT_DR: begin
                 case(ir)
                     IDCODE: begin
+                        next_tdo <= dr[0];
+                        dr <= {tdi, dr[31:1]};
+                    end
+                    SAMPLE: begin
                         next_tdo <= dr[0];
                         dr <= {tdi, dr[31:1]};
                     end
