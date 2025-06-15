@@ -37,6 +37,8 @@ slave_bus_if ibus_if_rom0(clk, rst_n);
 slave_bus_if dbus_if_gpio0(clk, rst_n);
 
 // riscv32 core-0
+logic irq_sw0, irq_ext0, irq_timer0;
+
 rv_core #(.INITIAL_PC(32'h2000_0000)) core0(
     .ibus(ibus_if_core0),
     .dbus(dbus_if_core0),
@@ -44,8 +46,15 @@ rv_core #(.INITIAL_PC(32'h2000_0000)) core0(
     .resumereq(1'b0),
     .resethaltreq(1'b0),
     .clk(clk),
-    .rst_n(rst_n)
+    .rst_n(rst_n),
+    .irq_sw(irq_sw0),
+    .irq_ext(irq_ext0),
+    .irq_timer(irq_timer0)
 );
+
+clint clint0(.irq_sw(irq_sw0), .irq_ext(irq_ext0), .irq_timer(irq_timer0))
+
+plic plic0();
 
 // dual port memory
 memory_wrapped mem0(.ibus(ibus_if_mem0), .dbus(dbus_if_mem0), .clk(clk), .rst_n(rst_n));

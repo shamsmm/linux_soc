@@ -21,7 +21,7 @@ typedef enum logic [3:0] {
 
 typedef enum logic [5:0] {
     BYPASS  = 6'b111111,
-    SAMPLE  = 6'h3A, 
+    SAMPLE  = 6'h0, 
     IDCODE  = 6'b000001
 } jtag_instruction_t;
 
@@ -36,7 +36,7 @@ localparam IDCODE_VALUE = 32'h1BEEF001;
 logic tdo_next_bit;
 
 always_comb begin
-    tdo_next_bit = 1'b0; // Default to 0
+    tdo_next_bit = bypass; // Default to 0
     tdo_en = 1'b0;       // Default to TDO not enabled
 
     case(state)
@@ -47,7 +47,6 @@ always_comb begin
                 SAMPLE: tdo_next_bit = dr[0];
                 BYPASS: tdo_next_bit = bypass;
                 // Add other DRs based on instruction as needed
-                default: tdo_next_bit = bypass; // Default to bypass if unknown instruction
             endcase
         end
         SHIFT_IR: begin
@@ -76,7 +75,8 @@ always_ff @(posedge tclk, negedge trst)
         bypass <= 0;
         ir <= IDCODE;
         ir_shift <= 0;
-    end else
+    end else begin
+        bypass <= tdi;
         case(state)
             TEST_LOGIC_RESET: begin
                 state <= tms ? TEST_LOGIC_RESET : RUN_TEST_IDLE;            
@@ -92,7 +92,7 @@ always_ff @(posedge tclk, negedge trst)
                 case(ir)
                     IDCODE: dr <= IDCODE_VALUE;
                     SAMPLE: dr <= 32'h12345678;
-                    BYPASS: bypass <= 1'b0;
+                    BYPASS: bypass <= 1'b1;
                 endcase
             end
             SHIFT_DR: begin
@@ -106,7 +106,8 @@ always_ff @(posedge tclk, negedge trst)
                         dr <= {tdi, dr[31:1]};
                     end
                     BYPASS: begin 
-                        bypass <= tdi;
+                        // already done
+                        // bypass <= tdi;
                     end
                 endcase
             end
@@ -141,5 +142,6 @@ always_ff @(posedge tclk, negedge trst)
             default: 
                 state <= TEST_LOGIC_RESET;
         endcase
+    end
 
 endmodule
