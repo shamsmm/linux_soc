@@ -14,3 +14,9 @@ Info : BCM2835 GPIO JTAG/SWD bitbang driver
 Info : clock speed 997 kHz
 Info : JTAG tap: mychip.tap tap/device found: 0x1beef001 (mfg: 0x000 (<invalid>), part: 0xbeef, ver: 0x1)
 ```
+
+# GCC Objdump
+Add this to see primitives
+```
+--disassembler-options=no-aliases
+```
