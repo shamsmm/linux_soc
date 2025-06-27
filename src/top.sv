@@ -36,6 +36,12 @@ slave_bus_if ibus_if_rom0(clk, rst_n);
 // gpio memory mapped interface to bus (D-bus)
 slave_bus_if dbus_if_gpio0(clk, rst_n);
 
+// plic (D-bus)
+slave_bus_if dbus_if_plic0(clk, rst_n);
+
+// clit (D-bus)
+slave_bus_if dbus_if_clit0(clk, rst_n);
+
 // riscv32 core-0
 logic irq_sw0, irq_ext0, irq_timer0;
 
@@ -52,7 +58,9 @@ rv_core #(.INITIAL_PC(32'h2000_0000)) core0(
     .irq_timer(irq_timer0)
 );
 
-clint clint0(.irq_sw(irq_sw0), .irq_timer(irq_timer0));
+// clint
+clint clint0(.bus(dbus_if_clit0), .clk(clk), .irq_sw(irq_sw0), .irq_timer(irq_timer0), .rst_n(rst_n));
+
 
 plic plic0(.irq_ext(irq_ext0));
 
