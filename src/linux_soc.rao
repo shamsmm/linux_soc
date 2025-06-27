@@ -2,318 +2,92 @@
 <GAO_CONFIG>
     <Version>3.0</Version>
     <Mode>Standard</Mode>
-    <AoCore index="0" sample_clock="sysclk" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="0" module_name="top" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
+    <AoCore index="0" sample_clock="debug_transport/tclk" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="0" module_name="top" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
         <SignalList>
-            <Bus capture_enable="true" name="core0/pc[31:0]">
-                <Signal>core0/pc[31]</Signal>
-                <Signal>core0/pc[30]</Signal>
-                <Signal>core0/pc[29]</Signal>
-                <Signal>core0/pc[28]</Signal>
-                <Signal>core0/pc[27]</Signal>
-                <Signal>core0/pc[26]</Signal>
-                <Signal>core0/pc[25]</Signal>
-                <Signal>core0/pc[24]</Signal>
-                <Signal>core0/pc[23]</Signal>
-                <Signal>core0/pc[22]</Signal>
-                <Signal>core0/pc[21]</Signal>
-                <Signal>core0/pc[20]</Signal>
-                <Signal>core0/pc[19]</Signal>
-                <Signal>core0/pc[18]</Signal>
-                <Signal>core0/pc[17]</Signal>
-                <Signal>core0/pc[16]</Signal>
-                <Signal>core0/pc[15]</Signal>
-                <Signal>core0/pc[14]</Signal>
-                <Signal>core0/pc[13]</Signal>
-                <Signal>core0/pc[12]</Signal>
-                <Signal>core0/pc[11]</Signal>
-                <Signal>core0/pc[10]</Signal>
-                <Signal>core0/pc[9]</Signal>
-                <Signal>core0/pc[8]</Signal>
-                <Signal>core0/pc[7]</Signal>
-                <Signal>core0/pc[6]</Signal>
-                <Signal>core0/pc[5]</Signal>
-                <Signal>core0/pc[4]</Signal>
-                <Signal>core0/pc[3]</Signal>
-                <Signal>core0/pc[2]</Signal>
-                <Signal>core0/pc[1]</Signal>
-                <Signal>core0/pc[0]</Signal>
+            <Bus capture_enable="true" name="debug_transport/instruction[5:0]">
+                <Signal>debug_transport/instruction[5]</Signal>
+                <Signal>debug_transport/instruction[4]</Signal>
+                <Signal>debug_transport/instruction[3]</Signal>
+                <Signal>debug_transport/instruction[2]</Signal>
+                <Signal>debug_transport/instruction[1]</Signal>
+                <Signal>debug_transport/instruction[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="core0/state[1:0]">
-                <Signal>core0/state[1]</Signal>
-                <Signal>core0/state[0]</Signal>
+            <Bus capture_enable="true" name="debug_transport/state[3:0]">
+                <Signal>debug_transport/state[3]</Signal>
+                <Signal>debug_transport/state[2]</Signal>
+                <Signal>debug_transport/state[1]</Signal>
+                <Signal>debug_transport/state[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="ibus_if_core0.rdata[31:0]">
-                <Signal>ibus_if_core0.rdata[31]</Signal>
-                <Signal>ibus_if_core0.rdata[30]</Signal>
-                <Signal>ibus_if_core0.rdata[29]</Signal>
-                <Signal>ibus_if_core0.rdata[28]</Signal>
-                <Signal>ibus_if_core0.rdata[27]</Signal>
-                <Signal>ibus_if_core0.rdata[26]</Signal>
-                <Signal>ibus_if_core0.rdata[25]</Signal>
-                <Signal>ibus_if_core0.rdata[24]</Signal>
-                <Signal>ibus_if_core0.rdata[23]</Signal>
-                <Signal>ibus_if_core0.rdata[22]</Signal>
-                <Signal>ibus_if_core0.rdata[21]</Signal>
-                <Signal>ibus_if_core0.rdata[20]</Signal>
-                <Signal>ibus_if_core0.rdata[19]</Signal>
-                <Signal>ibus_if_core0.rdata[18]</Signal>
-                <Signal>ibus_if_core0.rdata[17]</Signal>
-                <Signal>ibus_if_core0.rdata[16]</Signal>
-                <Signal>ibus_if_core0.rdata[15]</Signal>
-                <Signal>ibus_if_core0.rdata[14]</Signal>
-                <Signal>ibus_if_core0.rdata[13]</Signal>
-                <Signal>ibus_if_core0.rdata[12]</Signal>
-                <Signal>ibus_if_core0.rdata[11]</Signal>
-                <Signal>ibus_if_core0.rdata[10]</Signal>
-                <Signal>ibus_if_core0.rdata[9]</Signal>
-                <Signal>ibus_if_core0.rdata[8]</Signal>
-                <Signal>ibus_if_core0.rdata[7]</Signal>
-                <Signal>ibus_if_core0.rdata[6]</Signal>
-                <Signal>ibus_if_core0.rdata[5]</Signal>
-                <Signal>ibus_if_core0.rdata[4]</Signal>
-                <Signal>ibus_if_core0.rdata[3]</Signal>
-                <Signal>ibus_if_core0.rdata[2]</Signal>
-                <Signal>ibus_if_core0.rdata[1]</Signal>
-                <Signal>ibus_if_core0.rdata[0]</Signal>
+            <Bus capture_enable="true" name="debug_transport/next_state[3:0]">
+                <Signal>debug_transport/next_state[3]</Signal>
+                <Signal>debug_transport/next_state[2]</Signal>
+                <Signal>debug_transport/next_state[1]</Signal>
+                <Signal>debug_transport/next_state[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="ibus_if_core0.addr[31:0]">
-                <Signal>ibus_if_core0.addr[31]</Signal>
-                <Signal>ibus_if_core0.addr[30]</Signal>
-                <Signal>ibus_if_core0.addr[29]</Signal>
-                <Signal>ibus_if_core0.addr[28]</Signal>
-                <Signal>ibus_if_core0.addr[27]</Signal>
-                <Signal>ibus_if_core0.addr[26]</Signal>
-                <Signal>ibus_if_core0.addr[25]</Signal>
-                <Signal>ibus_if_core0.addr[24]</Signal>
-                <Signal>ibus_if_core0.addr[23]</Signal>
-                <Signal>ibus_if_core0.addr[22]</Signal>
-                <Signal>ibus_if_core0.addr[21]</Signal>
-                <Signal>ibus_if_core0.addr[20]</Signal>
-                <Signal>ibus_if_core0.addr[19]</Signal>
-                <Signal>ibus_if_core0.addr[18]</Signal>
-                <Signal>ibus_if_core0.addr[17]</Signal>
-                <Signal>ibus_if_core0.addr[16]</Signal>
-                <Signal>ibus_if_core0.addr[15]</Signal>
-                <Signal>ibus_if_core0.addr[14]</Signal>
-                <Signal>ibus_if_core0.addr[13]</Signal>
-                <Signal>ibus_if_core0.addr[12]</Signal>
-                <Signal>ibus_if_core0.addr[11]</Signal>
-                <Signal>ibus_if_core0.addr[10]</Signal>
-                <Signal>ibus_if_core0.addr[9]</Signal>
-                <Signal>ibus_if_core0.addr[8]</Signal>
-                <Signal>ibus_if_core0.addr[7]</Signal>
-                <Signal>ibus_if_core0.addr[6]</Signal>
-                <Signal>ibus_if_core0.addr[5]</Signal>
-                <Signal>ibus_if_core0.addr[4]</Signal>
-                <Signal>ibus_if_core0.addr[3]</Signal>
-                <Signal>ibus_if_core0.addr[2]</Signal>
-                <Signal>ibus_if_core0.addr[1]</Signal>
-                <Signal>ibus_if_core0.addr[0]</Signal>
+            <Bus capture_enable="true" name="debug_transport/ir[5:0]">
+                <Signal>debug_transport/ir[5]</Signal>
+                <Signal>debug_transport/ir[4]</Signal>
+                <Signal>debug_transport/ir[3]</Signal>
+                <Signal>debug_transport/ir[2]</Signal>
+                <Signal>debug_transport/ir[1]</Signal>
+                <Signal>debug_transport/ir[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="dbus_if_core0.wdata[31:0]">
-                <Signal>dbus_if_core0.wdata[31]</Signal>
-                <Signal>dbus_if_core0.wdata[30]</Signal>
-                <Signal>dbus_if_core0.wdata[29]</Signal>
-                <Signal>dbus_if_core0.wdata[28]</Signal>
-                <Signal>dbus_if_core0.wdata[27]</Signal>
-                <Signal>dbus_if_core0.wdata[26]</Signal>
-                <Signal>dbus_if_core0.wdata[25]</Signal>
-                <Signal>dbus_if_core0.wdata[24]</Signal>
-                <Signal>dbus_if_core0.wdata[23]</Signal>
-                <Signal>dbus_if_core0.wdata[22]</Signal>
-                <Signal>dbus_if_core0.wdata[21]</Signal>
-                <Signal>dbus_if_core0.wdata[20]</Signal>
-                <Signal>dbus_if_core0.wdata[19]</Signal>
-                <Signal>dbus_if_core0.wdata[18]</Signal>
-                <Signal>dbus_if_core0.wdata[17]</Signal>
-                <Signal>dbus_if_core0.wdata[16]</Signal>
-                <Signal>dbus_if_core0.wdata[15]</Signal>
-                <Signal>dbus_if_core0.wdata[14]</Signal>
-                <Signal>dbus_if_core0.wdata[13]</Signal>
-                <Signal>dbus_if_core0.wdata[12]</Signal>
-                <Signal>dbus_if_core0.wdata[11]</Signal>
-                <Signal>dbus_if_core0.wdata[10]</Signal>
-                <Signal>dbus_if_core0.wdata[9]</Signal>
-                <Signal>dbus_if_core0.wdata[8]</Signal>
-                <Signal>dbus_if_core0.wdata[7]</Signal>
-                <Signal>dbus_if_core0.wdata[6]</Signal>
-                <Signal>dbus_if_core0.wdata[5]</Signal>
-                <Signal>dbus_if_core0.wdata[4]</Signal>
-                <Signal>dbus_if_core0.wdata[3]</Signal>
-                <Signal>dbus_if_core0.wdata[2]</Signal>
-                <Signal>dbus_if_core0.wdata[1]</Signal>
-                <Signal>dbus_if_core0.wdata[0]</Signal>
+            <Bus capture_enable="true" name="debug_transport/dr[31:0]">
+                <Signal>debug_transport/dr[31]</Signal>
+                <Signal>debug_transport/dr[30]</Signal>
+                <Signal>debug_transport/dr[29]</Signal>
+                <Signal>debug_transport/dr[28]</Signal>
+                <Signal>debug_transport/dr[27]</Signal>
+                <Signal>debug_transport/dr[26]</Signal>
+                <Signal>debug_transport/dr[25]</Signal>
+                <Signal>debug_transport/dr[24]</Signal>
+                <Signal>debug_transport/dr[23]</Signal>
+                <Signal>debug_transport/dr[22]</Signal>
+                <Signal>debug_transport/dr[21]</Signal>
+                <Signal>debug_transport/dr[20]</Signal>
+                <Signal>debug_transport/dr[19]</Signal>
+                <Signal>debug_transport/dr[18]</Signal>
+                <Signal>debug_transport/dr[17]</Signal>
+                <Signal>debug_transport/dr[16]</Signal>
+                <Signal>debug_transport/dr[15]</Signal>
+                <Signal>debug_transport/dr[14]</Signal>
+                <Signal>debug_transport/dr[13]</Signal>
+                <Signal>debug_transport/dr[12]</Signal>
+                <Signal>debug_transport/dr[11]</Signal>
+                <Signal>debug_transport/dr[10]</Signal>
+                <Signal>debug_transport/dr[9]</Signal>
+                <Signal>debug_transport/dr[8]</Signal>
+                <Signal>debug_transport/dr[7]</Signal>
+                <Signal>debug_transport/dr[6]</Signal>
+                <Signal>debug_transport/dr[5]</Signal>
+                <Signal>debug_transport/dr[4]</Signal>
+                <Signal>debug_transport/dr[3]</Signal>
+                <Signal>debug_transport/dr[2]</Signal>
+                <Signal>debug_transport/dr[1]</Signal>
+                <Signal>debug_transport/dr[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="dbus_if_core0.rdata[31:0]">
-                <Signal>dbus_if_core0.rdata[31]</Signal>
-                <Signal>dbus_if_core0.rdata[30]</Signal>
-                <Signal>dbus_if_core0.rdata[29]</Signal>
-                <Signal>dbus_if_core0.rdata[28]</Signal>
-                <Signal>dbus_if_core0.rdata[27]</Signal>
-                <Signal>dbus_if_core0.rdata[26]</Signal>
-                <Signal>dbus_if_core0.rdata[25]</Signal>
-                <Signal>dbus_if_core0.rdata[24]</Signal>
-                <Signal>dbus_if_core0.rdata[23]</Signal>
-                <Signal>dbus_if_core0.rdata[22]</Signal>
-                <Signal>dbus_if_core0.rdata[21]</Signal>
-                <Signal>dbus_if_core0.rdata[20]</Signal>
-                <Signal>dbus_if_core0.rdata[19]</Signal>
-                <Signal>dbus_if_core0.rdata[18]</Signal>
-                <Signal>dbus_if_core0.rdata[17]</Signal>
-                <Signal>dbus_if_core0.rdata[16]</Signal>
-                <Signal>dbus_if_core0.rdata[15]</Signal>
-                <Signal>dbus_if_core0.rdata[14]</Signal>
-                <Signal>dbus_if_core0.rdata[13]</Signal>
-                <Signal>dbus_if_core0.rdata[12]</Signal>
-                <Signal>dbus_if_core0.rdata[11]</Signal>
-                <Signal>dbus_if_core0.rdata[10]</Signal>
-                <Signal>dbus_if_core0.rdata[9]</Signal>
-                <Signal>dbus_if_core0.rdata[8]</Signal>
-                <Signal>dbus_if_core0.rdata[7]</Signal>
-                <Signal>dbus_if_core0.rdata[6]</Signal>
-                <Signal>dbus_if_core0.rdata[5]</Signal>
-                <Signal>dbus_if_core0.rdata[4]</Signal>
-                <Signal>dbus_if_core0.rdata[3]</Signal>
-                <Signal>dbus_if_core0.rdata[2]</Signal>
-                <Signal>dbus_if_core0.rdata[1]</Signal>
-                <Signal>dbus_if_core0.rdata[0]</Signal>
+            <Bus capture_enable="true" name="debug_transport/bypass[0:0]">
+                <Signal>debug_transport/bypass[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="dbus_if_core0.addr[31:0]">
-                <Signal>dbus_if_core0.addr[31]</Signal>
-                <Signal>dbus_if_core0.addr[30]</Signal>
-                <Signal>dbus_if_core0.addr[29]</Signal>
-                <Signal>dbus_if_core0.addr[28]</Signal>
-                <Signal>dbus_if_core0.addr[27]</Signal>
-                <Signal>dbus_if_core0.addr[26]</Signal>
-                <Signal>dbus_if_core0.addr[25]</Signal>
-                <Signal>dbus_if_core0.addr[24]</Signal>
-                <Signal>dbus_if_core0.addr[23]</Signal>
-                <Signal>dbus_if_core0.addr[22]</Signal>
-                <Signal>dbus_if_core0.addr[21]</Signal>
-                <Signal>dbus_if_core0.addr[20]</Signal>
-                <Signal>dbus_if_core0.addr[19]</Signal>
-                <Signal>dbus_if_core0.addr[18]</Signal>
-                <Signal>dbus_if_core0.addr[17]</Signal>
-                <Signal>dbus_if_core0.addr[16]</Signal>
-                <Signal>dbus_if_core0.addr[15]</Signal>
-                <Signal>dbus_if_core0.addr[14]</Signal>
-                <Signal>dbus_if_core0.addr[13]</Signal>
-                <Signal>dbus_if_core0.addr[12]</Signal>
-                <Signal>dbus_if_core0.addr[11]</Signal>
-                <Signal>dbus_if_core0.addr[10]</Signal>
-                <Signal>dbus_if_core0.addr[9]</Signal>
-                <Signal>dbus_if_core0.addr[8]</Signal>
-                <Signal>dbus_if_core0.addr[7]</Signal>
-                <Signal>dbus_if_core0.addr[6]</Signal>
-                <Signal>dbus_if_core0.addr[5]</Signal>
-                <Signal>dbus_if_core0.addr[4]</Signal>
-                <Signal>dbus_if_core0.addr[3]</Signal>
-                <Signal>dbus_if_core0.addr[2]</Signal>
-                <Signal>dbus_if_core0.addr[1]</Signal>
-                <Signal>dbus_if_core0.addr[0]</Signal>
-            </Bus>
-            <Bus capture_enable="true" name="dbus_if_core0.tsize[1:0]">
-                <Signal>dbus_if_core0.tsize[1]</Signal>
-                <Signal>dbus_if_core0.tsize[0]</Signal>
-            </Bus>
-            <Bus capture_enable="true" name="dbus_if_gpio0.wdata[31:0]">
-                <Signal>dbus_if_gpio0.wdata[31]</Signal>
-                <Signal>dbus_if_gpio0.wdata[30]</Signal>
-                <Signal>dbus_if_gpio0.wdata[29]</Signal>
-                <Signal>dbus_if_gpio0.wdata[28]</Signal>
-                <Signal>dbus_if_gpio0.wdata[27]</Signal>
-                <Signal>dbus_if_gpio0.wdata[26]</Signal>
-                <Signal>dbus_if_gpio0.wdata[25]</Signal>
-                <Signal>dbus_if_gpio0.wdata[24]</Signal>
-                <Signal>dbus_if_gpio0.wdata[23]</Signal>
-                <Signal>dbus_if_gpio0.wdata[22]</Signal>
-                <Signal>dbus_if_gpio0.wdata[21]</Signal>
-                <Signal>dbus_if_gpio0.wdata[20]</Signal>
-                <Signal>dbus_if_gpio0.wdata[19]</Signal>
-                <Signal>dbus_if_gpio0.wdata[18]</Signal>
-                <Signal>dbus_if_gpio0.wdata[17]</Signal>
-                <Signal>dbus_if_gpio0.wdata[16]</Signal>
-                <Signal>dbus_if_gpio0.wdata[15]</Signal>
-                <Signal>dbus_if_gpio0.wdata[14]</Signal>
-                <Signal>dbus_if_gpio0.wdata[13]</Signal>
-                <Signal>dbus_if_gpio0.wdata[12]</Signal>
-                <Signal>dbus_if_gpio0.wdata[11]</Signal>
-                <Signal>dbus_if_gpio0.wdata[10]</Signal>
-                <Signal>dbus_if_gpio0.wdata[9]</Signal>
-                <Signal>dbus_if_gpio0.wdata[8]</Signal>
-                <Signal>dbus_if_gpio0.wdata[7]</Signal>
-                <Signal>dbus_if_gpio0.wdata[6]</Signal>
-                <Signal>dbus_if_gpio0.wdata[5]</Signal>
-                <Signal>dbus_if_gpio0.wdata[4]</Signal>
-                <Signal>dbus_if_gpio0.wdata[3]</Signal>
-                <Signal>dbus_if_gpio0.wdata[2]</Signal>
-                <Signal>dbus_if_gpio0.wdata[1]</Signal>
-                <Signal>dbus_if_gpio0.wdata[0]</Signal>
-            </Bus>
-            <Bus capture_enable="true" name="dbus_if_gpio0.addr[31:0]">
-                <Signal>dbus_if_gpio0.addr[31]</Signal>
-                <Signal>dbus_if_gpio0.addr[30]</Signal>
-                <Signal>dbus_if_gpio0.addr[29]</Signal>
-                <Signal>dbus_if_gpio0.addr[28]</Signal>
-                <Signal>dbus_if_gpio0.addr[27]</Signal>
-                <Signal>dbus_if_gpio0.addr[26]</Signal>
-                <Signal>dbus_if_gpio0.addr[25]</Signal>
-                <Signal>dbus_if_gpio0.addr[24]</Signal>
-                <Signal>dbus_if_gpio0.addr[23]</Signal>
-                <Signal>dbus_if_gpio0.addr[22]</Signal>
-                <Signal>dbus_if_gpio0.addr[21]</Signal>
-                <Signal>dbus_if_gpio0.addr[20]</Signal>
-                <Signal>dbus_if_gpio0.addr[19]</Signal>
-                <Signal>dbus_if_gpio0.addr[18]</Signal>
-                <Signal>dbus_if_gpio0.addr[17]</Signal>
-                <Signal>dbus_if_gpio0.addr[16]</Signal>
-                <Signal>dbus_if_gpio0.addr[15]</Signal>
-                <Signal>dbus_if_gpio0.addr[14]</Signal>
-                <Signal>dbus_if_gpio0.addr[13]</Signal>
-                <Signal>dbus_if_gpio0.addr[12]</Signal>
-                <Signal>dbus_if_gpio0.addr[11]</Signal>
-                <Signal>dbus_if_gpio0.addr[10]</Signal>
-                <Signal>dbus_if_gpio0.addr[9]</Signal>
-                <Signal>dbus_if_gpio0.addr[8]</Signal>
-                <Signal>dbus_if_gpio0.addr[7]</Signal>
-                <Signal>dbus_if_gpio0.addr[6]</Signal>
-                <Signal>dbus_if_gpio0.addr[5]</Signal>
-                <Signal>dbus_if_gpio0.addr[4]</Signal>
-                <Signal>dbus_if_gpio0.addr[3]</Signal>
-                <Signal>dbus_if_gpio0.addr[2]</Signal>
-                <Signal>dbus_if_gpio0.addr[1]</Signal>
-                <Signal>dbus_if_gpio0.addr[0]</Signal>
-            </Bus>
-            <Bus capture_enable="true" name="dbus_if_gpio0.tsize[1:0]">
-                <Signal>dbus_if_gpio0.tsize[1]</Signal>
-                <Signal>dbus_if_gpio0.tsize[0]</Signal>
-            </Bus>
-            <Signal capture_enable="true">dbus_if_gpio0.ttype</Signal>
-            <Bus capture_enable="true" name="gpio0/output_en[7:0]">
-                <Signal>gpio0/output_en[7]</Signal>
-                <Signal>gpio0/output_en[6]</Signal>
-                <Signal>gpio0/output_en[5]</Signal>
-                <Signal>gpio0/output_en[4]</Signal>
-                <Signal>gpio0/output_en[3]</Signal>
-                <Signal>gpio0/output_en[2]</Signal>
-                <Signal>gpio0/output_en[1]</Signal>
-                <Signal>gpio0/output_en[0]</Signal>
-            </Bus>
-            <Bus capture_enable="true" name="gpio0/output_val[7:0]">
-                <Signal>gpio0/output_val[7]</Signal>
-                <Signal>gpio0/output_val[6]</Signal>
-                <Signal>gpio0/output_val[5]</Signal>
-                <Signal>gpio0/output_val[4]</Signal>
-                <Signal>gpio0/output_val[3]</Signal>
-                <Signal>gpio0/output_val[2]</Signal>
-                <Signal>gpio0/output_val[1]</Signal>
-                <Signal>gpio0/output_val[0]</Signal>
-            </Bus>
+            <Signal capture_enable="true">debug_transport/tdo</Signal>
+            <Signal capture_enable="true">debug_transport/tdo_en</Signal>
+            <Signal capture_enable="true">debug_transport/tclk</Signal>
+            <Signal capture_enable="true">debug_transport/tdi</Signal>
+            <Signal capture_enable="true">debug_transport/tms</Signal>
+            <Signal capture_enable="true">debug_transport/trst</Signal>
+            <Signal capture_enable="true">debug_transport/next_tdo</Signal>
         </SignalList>
         <Triggers>
             <Trigger index="0">
                 <SignalList>
-                    <Signal>clk</Signal>
+                    <Bus restorename="debug_transport/instruction[5:0]">
+                        <Signal>debug_transport/instruction[5]</Signal>
+                        <Signal>debug_transport/instruction[4]</Signal>
+                        <Signal>debug_transport/instruction[3]</Signal>
+                        <Signal>debug_transport/instruction[2]</Signal>
+                        <Signal>debug_transport/instruction[1]</Signal>
+                        <Signal>debug_transport/instruction[0]</Signal>
+                    </Bus>
                 </SignalList>
             </Trigger>
             <Trigger index="1"/>
@@ -333,7 +107,7 @@
             <Trigger index="15"/>
         </Triggers>
         <MatchUnits>
-            <MatchUnit index="0" enabled="1" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="R" value1="0" trigger="0"/>
+            <MatchUnit index="0" enabled="1" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="111111" value1="000000" trigger="0"/>
             <MatchUnit index="1" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="2" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="3" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
@@ -354,5 +128,5 @@
             <Expression>M0</Expression>
         </Expressions>
     </AoCore>
-    <GAO_ID>1111101110011101</GAO_ID>
+    <GAO_ID>0000000101011000</GAO_ID>
 </GAO_CONFIG>
