@@ -15,12 +15,13 @@ module top(
 );
 
 bit clk;
+assign clk = sysclk; // 27MHz
 
-Gowin_CLKDIV divider0 (
-    .clkout(clk), //output clkout
-    .hclkin(sysclk), //input hclkin
-    .resetn(rst_n) //input resetn
-);
+//Gowin_CLKDIV divider0 (
+//    .clkout(clk), //output clkout
+//    .hclkin(sysclk), //input hclkin
+//    .resetn(rst_n) //input resetn
+//);
 
 // riscv32 core-0 master interfaces to I-bus and D-bus
 master_bus_if dbus_if_core0(clk, rst_n);
@@ -62,7 +63,7 @@ rv_core #(.INITIAL_PC(32'h2000_0000)) core0(
 clint clint0(.bus(dbus_if_clit0), .clk(clk), .irq_sw(irq_sw0), .irq_timer(irq_timer0), .rst_n(rst_n));
 
 
-plic plic0(.irq_ext(irq_ext0));
+//plic plic0(.irq_ext(irq_ext0));
 
 // dual port memory
 memory_wrapped mem0(.ibus(ibus_if_mem0), .dbus(dbus_if_mem0), .clk(clk), .rst_n(rst_n));
