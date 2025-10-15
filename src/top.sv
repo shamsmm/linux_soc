@@ -1,7 +1,7 @@
 module top(
     // system clk and reset
     input bit sysclk,
-    input bit rst_n,
+    input bit sysrst_n,
     
     // input/outputs
     inout [7:0] gpio,
@@ -16,6 +16,8 @@ module top(
 
 bit clk;
 assign clk = sysclk; // 27MHz
+logic rst_n;
+assign rst_n = !ndmreset & sysrst_n;
 
 //Gowin_CLKDIV divider0 (
 //    .clkout(clk), //output clkout
@@ -86,6 +88,9 @@ logic dmi;
 logic [8:0] chain = {rst_n, gpio}; // readonly
 
 dtm_jtag debug_transport(.tdi(dtm_tdi), .trst(dtm_trst), .tms(dtm_tms), .tclk(dtm_tclk), .tdo(tdo), .tdo_en(tdo_en));
+
+logic ndmreset;
+dm debug_module(.ndmreset(ndmreset));
 
 TBUF jtag_tdo (
   .I    (tdo),      // Input data

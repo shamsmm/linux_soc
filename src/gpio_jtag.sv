@@ -1,4 +1,4 @@
-module dtm_jtag(
+module gpio_jtag(
     // JTAG signals
     output logic tdo,
     output logic tdo_en,
@@ -7,17 +7,8 @@ module dtm_jtag(
     input  logic tms,
     input  logic trst,
 
-    // DMI trivial bus
-    output bit dmi_start,
-    input bit dmi_finish,
-    output logic [1:0] dmi_op,
-    output logic [33:2] dmi_data_o,
-    input logic [33:2] dmi_data_i,
-    output logic [abits_value+33:34] dmi_address,
+    // GPIO value
     
-    // clock and reset
-    input bit clk,
-    input bit rst_n
 );
 
 import jtag::*;
@@ -26,43 +17,13 @@ logic [5:0] ir_shift;
 logic [31:0] dr;
 logic [0:0] bypass;
 
-localparam int unsigned IDCODE_VALUE = 32'h1BEEF001;
-localparam int unsigned abits_value = 7;
+localparam int unsigned IDCODE_VALUE = 32'h1BEEF002;
 
 typedef enum logic [5:0] {
     BYPASS  = 6'h00,
     IDCODE  = 6'h01,
-    DTM     = 6'h10,
-    DMI     = 6'h11
+    SAMPLE  = 6'hFF
 } jtag_instruction_t;
-
-typedef enum logic [11:10] {
-    NOERROR = 0,
-    RESERVED = 1,
-    FAILED = 2,
-    STILL_IN_PROGRESS = 3
-} dmistat_e;
-
-typedef struct packed {
-    logic [3:0] version;
-    logic [9:4] abits;
-    logic [11:10] dmistat;
-    logic [14:12] idle;
-    logic _15;
-    logic dmireset;
-    logic dmihardreset;
-    logic [31:18] _31_18;
-} dtmcs_t;  
-
-typedef struct packed {
-    logic [1:0] op;
-    logic [33:2] data;
-    logic [abits_value+33:34] address;
-} dmi_t;  
-
-jtag_state_t state, next_state;
-jtag_instruction_t ir;
-dtmcs_t dtmcs;
 
 assign tdo_en = (state == SHIFT_DR || state == SHIFT_IR);
 
@@ -75,7 +36,7 @@ always_ff @(negedge tclk, negedge trst)
             SHIFT_IR: tdo <= ir_shift[0];
             SHIFT_DR: begin
                 case(ir)
-                    IDCODE, DTM, DMI: begin
+                    IDCODE, SAMPLE: begin
                         tdo <= dr[0];
                     end
                     BYPASS: begin
@@ -86,19 +47,13 @@ always_ff @(negedge tclk, negedge trst)
         endcase
 
 always_ff @(negedge tclk, negedge trst)
-    if (!trst) begin
+    if (!trst)
         ir <= IDCODE;
-        dtmcs.version <= 0;
-        dtmcs.abits <= abits_value;
-        dtmcs.dmistat <= NOERROR;
-        dtmcs.idle <= 3; // Wait a lot
-    end else
+    else
         case(state)
             TEST_LOGIC_RESET: ir <= IDCODE;
             UPDATE_IR: ir <= jtag_instruction_t'(ir_shift);
             UPDATE_DR: case(ir)
-                DTM: dtmcs[17:16] <= dr[17:16]; // only writable fields
-                DMI: {dmi_address, dmi_data_o, dmi_op} <= dr[abits_value+33:0];
             endcase
         endcase
 
@@ -119,19 +74,15 @@ always_ff @(posedge tclk or negedge trst) begin
             CAPTURE_DR: begin
                 case(ir)
                     IDCODE: dr <= IDCODE_VALUE;
-                    DTM: dr <= dtmcs;
-                    DMI: dr <= {dmi_address, dmi_data_i, dmi_op};
+                    SAMPLE: dr <= 32'h55555555;
                     BYPASS: bypass <= 0;
                     default: bypass <= 0;
                 endcase
             end
             SHIFT_DR: begin
                 case(ir)
-                    IDCODE, DTM: begin
+                    IDCODE, SAMPLE: begin
                         dr <= {tdi, dr[31:1]};
-                    end
-                    DMI: begin
-                        dr <= {tdi, dr[abits_value+33:1]};
                     end
                     BYPASS: begin
                         bypass <= tdi;
