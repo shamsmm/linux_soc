@@ -13,21 +13,20 @@ module dtm_jtag(
     output logic [1:0] dmi_op,
     output logic [33:2] dmi_data_o,
     input logic [33:2] dmi_data_i,
-    output logic [abits_value+33:34] dmi_address,
+    output logic [7+33:34] dmi_address
     
     // clock and reset
-    input bit clk,
-    input bit rst_n
+    //input bit clk,
+    //input bit rst_n
 );
 
 import jtag::*;
 
 logic [5:0] ir_shift;
-logic [31:0] dr;
+logic [7+33:0] dr;
 logic [0:0] bypass;
 
 localparam int unsigned IDCODE_VALUE = 32'h1BEEF001;
-localparam int unsigned abits_value = 7;
 
 typedef enum logic [5:0] {
     BYPASS  = 6'h00,
@@ -46,7 +45,7 @@ typedef enum logic [11:10] {
 typedef struct packed {
     logic [3:0] version;
     logic [9:4] abits;
-    logic [11:10] dmistat;
+    dmistat_e dmistat;
     logic [14:12] idle;
     logic _15;
     logic dmireset;
@@ -55,10 +54,40 @@ typedef struct packed {
 } dtmcs_t;  
 
 typedef struct packed {
-    logic [1:0] op;
+    //logic [1:0] op; // leave it to other variables
     logic [33:2] data;
-    logic [abits_value+33:34] address;
-} dmi_t;  
+    logic [7+33:34] address;
+} dmi_without_op_t;  
+
+typedef enum logic [1:0] {
+    IDLE,
+    START,
+    EXECUTING
+} fsm_state_e;
+
+fsm_state_e fsm_state, next_fsm_state;
+logic toggle_start;
+
+// FSM
+
+always_comb begin
+    case(fsm_state)
+        IDLE: next_fsm_state = (state == UPDATE_DR && ir == DMI && (dmi_op == 2 || dmi_op == 1)) ? START : IDLE;
+        START: next_fsm_state = EXECUTING;
+        EXECUTING: next_fsm_state = dmi_finish ? IDLE : EXECUTING;
+        default: next_fsm_state = IDLE;
+    endcase    
+end
+
+always_ff @(posedge tclk, negedge trst) begin
+    if (!trst)
+        fsm_state <= IDLE;
+    else
+        if (state == UPDATE_DR && ir == DTM && dr[17]) // dmihardreset
+            fsm_state <= IDLE;
+        else
+            fsm_state <= next_fsm_state;
+end
 
 jtag_state_t state, next_state;
 jtag_instruction_t ir;
@@ -89,27 +118,41 @@ always_ff @(negedge tclk, negedge trst)
     if (!trst) begin
         ir <= IDCODE;
         dtmcs.version <= 0;
-        dtmcs.abits <= abits_value;
-        dtmcs.dmistat <= NOERROR;
+        dtmcs.abits <= 7;
+        //dtmcs.dmistat <= NOERROR;
         dtmcs.idle <= 3; // Wait a lot
     end else
         case(state)
             TEST_LOGIC_RESET: ir <= IDCODE;
             UPDATE_IR: ir <= jtag_instruction_t'(ir_shift);
             UPDATE_DR: case(ir)
-                DTM: dtmcs[17:16] <= dr[17:16]; // only writable fields
-                DMI: {dmi_address, dmi_data_o, dmi_op} <= dr[abits_value+33:0];
+                //DTM: dtmcs[17:16] <= dr[17:16]; // only writable fields
+                DMI: {dmi_address, dmi_data_o, dmi_op} <= dr[7+33:0]; // another fsm starts the transaction
             endcase
         endcase
 
+dmistat_e dmistat;
+always_ff @(posedge tclk, negedge trst)
+    if (!trst)
+        dmistat <= NOERROR;
+    else
+        if (state == UPDATE_DR && ir == DTM && (dr[17:16] != 0)) // dmireset or dmihardreset
+            dmistat <= NOERROR;
+        else if (dmistat != 0) // first error only (sticky)
+            if (state == CAPTURE_DR && ir == DMI)
+                dmistat <= dmi_error;
+
+dmistat_e dmi_error;
+always_comb dmi_error = fsm_state == IDLE ? NOERROR : STILL_IN_PROGRESS;
+
 always_ff @(posedge tclk or negedge trst) begin
     if (!trst) begin
-        dr <= IDCODE_VALUE;
+        dr <= {9'b0, IDCODE_VALUE};
         bypass <= 0;
     end else begin
         case (state)
             TEST_LOGIC_RESET: begin
-                dr <= IDCODE_VALUE;
+                dr <= {9'b0, IDCODE_VALUE};
                 bypass <= 0;
             end
             CAPTURE_IR: ir_shift <= 6'b0000_01;
@@ -118,9 +161,9 @@ always_ff @(posedge tclk or negedge trst) begin
             end
             CAPTURE_DR: begin
                 case(ir)
-                    IDCODE: dr <= IDCODE_VALUE;
-                    DTM: dr <= dtmcs;
-                    DMI: dr <= {dmi_address, dmi_data_i, dmi_op};
+                    IDCODE: dr <= {9'b0, IDCODE_VALUE};
+                    DTM: dr <= {9'b0, {dtmcs[31:12], dmistat, dtmcs[9:0]}};
+                    DMI: dr <= {dmi_address, dmi_data_i, dmi_error};
                     BYPASS: bypass <= 0;
                     default: bypass <= 0;
                 endcase
@@ -128,10 +171,10 @@ always_ff @(posedge tclk or negedge trst) begin
             SHIFT_DR: begin
                 case(ir)
                     IDCODE, DTM: begin
-                        dr <= {tdi, dr[31:1]};
+                        dr <= {9'b0, tdi, dr[31:1]};
                     end
                     DMI: begin
-                        dr <= {tdi, dr[abits_value+33:1]};
+                        dr <= {tdi, dr[7+33:1]};
                     end
                     BYPASS: begin
                         bypass <= tdi;

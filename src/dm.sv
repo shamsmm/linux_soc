@@ -1,7 +1,7 @@
 // Single hart DM
 module dm(
     // DMI trivial bus
-    input bit dmi_start,
+    input bit dmi_start, // must be synchronized to this clock domain
     output bit dmi_finish,
     input logic [1:0] dmi_op,
     input logic [33:2] dmi_data_o,
@@ -51,6 +51,7 @@ always_comb begin
         IDLE: next_state = dmi_start ? EXECUTING : IDLE;
         EXECUTING: next_state = FINALIZING;
         FINALIZING: next_state = IDLE;
+        default: next_state = IDLE;
     endcase
 
     dmi_finish = state == FINALIZING;
