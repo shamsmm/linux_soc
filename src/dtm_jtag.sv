@@ -43,15 +43,15 @@ typedef enum logic [11:10] {
 } dmistat_e;
 
 typedef struct packed {
-    logic [3:0] version;
-    logic [9:4] abits;
-    dmistat_e dmistat;
-    logic [14:12] idle;
-    logic _15;
-    logic dmireset;
-    logic dmihardreset;
     logic [31:18] _31_18;
-} dtmcs_t;  
+    logic dmihardreset;
+    logic dmireset;
+    logic _15;
+    logic [14:12] idle;
+    dmistat_e dmistat;
+    logic [9:4] abits;
+    logic [3:0] version;
+} dtmcs_t;
 
 typedef struct packed {
     //logic [1:0] op; // leave it to other variables
@@ -71,6 +71,7 @@ logic toggle_start;
 // FSM
 
 always_comb begin
+    dmi_start = fsm_state == START;
     case(fsm_state)
         IDLE: next_fsm_state = (state == UPDATE_DR && ir == DMI && (dmi_op == 2 || dmi_op == 1)) ? START : IDLE;
         START: next_fsm_state = EXECUTING;
