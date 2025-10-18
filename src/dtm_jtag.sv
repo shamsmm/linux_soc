@@ -70,12 +70,28 @@ logic toggle_start;
 
 // FSM
 
+always_ff @(posedge tclk, negedge trst)
+    if (!trst)
+        dmi_start <= 0;
+    else
+        if (fsm_state == START)
+            dmi_start <= ~dmi_start;
+
+bit dmi_finish_prev, dmi_finish_prev2;
+always_ff @(posedge tclk, negedge trst)
+    if (!trst) begin
+        dmi_finish_prev <= 0;
+        dmi_finish_prev2 <= 0;
+    end else begin
+        dmi_finish_prev <= dmi_finish;
+        dmi_finish_prev2 <= dmi_finish_prev;
+    end
+
 always_comb begin
-    dmi_start = fsm_state == START;
     case(fsm_state)
         IDLE: next_fsm_state = (state == UPDATE_DR && ir == DMI && (dmi_op == 2 || dmi_op == 1)) ? START : IDLE;
         START: next_fsm_state = EXECUTING;
-        EXECUTING: next_fsm_state = dmi_finish ? IDLE : EXECUTING;
+        EXECUTING: next_fsm_state = (dmi_finish_prev ^ dmi_finish_prev2) ? IDLE : EXECUTING;
         default: next_fsm_state = IDLE;
     endcase    
 end

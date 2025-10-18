@@ -45,17 +45,31 @@ typedef enum logic [1:0] {
 
 state_e state, next_state;
 
+logic actual_dmi_start;
+always_comb actual_dmi_start = (dmi_start_prev ^ dmi_start_prev2);
 // too much but whatever
 always_comb begin
     case(state)
-        IDLE: next_state = dmi_start ? EXECUTING : IDLE;
+        IDLE: next_state = actual_dmi_start ? EXECUTING : IDLE;
         EXECUTING: next_state = FINALIZING;
         FINALIZING: next_state = IDLE;
         default: next_state = IDLE;
     endcase
-
-    dmi_finish = state == FINALIZING;
 end
+
+always_ff @(posedge clk, negedge rst_n)
+    if (!rst_n)
+        state <= IDLE;
+    else
+        state <= next_state;
+
+always_ff @(posedge clk, negedge rst_n)
+    if (!rst_n)
+        dmi_finish <= 0;
+    else
+        if (state == FINALIZING)
+            dmi_finish <= ~dmi_finish;
+
 
 always_comb begin
     ndmreset = dmcontrol.ndmreset;
@@ -90,6 +104,16 @@ end
 
 dmcontrol_t dmi_data_o_dmcontrol;
 
+bit dmi_start_prev, dmi_start_prev2;
+always_ff @(posedge clk, negedge rst_n)
+    if (!rst_n) begin
+        dmi_start_prev <= 0;
+        dmi_start_prev2 <= 0;
+    end else begin
+        dmi_start_prev <= dmi_start;
+        dmi_start_prev2 <= dmi_start_prev;
+    end
+
 always_ff @(posedge clk, negedge rst_n)
     if (!rst_n) begin
         dmcontrol <= 0;
@@ -97,7 +121,7 @@ always_ff @(posedge clk, negedge rst_n)
         resumereq <= 0;
         haltreq <= 0;
     end else begin
-        if (dmi_start && dmi_op == 2) begin
+        if (actual_dmi_start && dmi_op == 2) begin
             case(dmi_address)
                 7'h10: begin
                     if (dmi_data_o_dmcontrol.setresethaltreq)
@@ -106,6 +130,7 @@ always_ff @(posedge clk, negedge rst_n)
                         resethaltreq <= 0;
 
                     if (dmi_data_o_dmcontrol.resumereq & halted) begin
+                        haltreq <= 0;
                         resumereq <= 1;
                     end else if (dmi_data_o_dmcontrol.haltreq) begin
                         haltreq <= 1;
