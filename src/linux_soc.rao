@@ -2,92 +2,18 @@
 <GAO_CONFIG>
     <Version>3.0</Version>
     <Mode>Standard</Mode>
-    <AoCore index="0" sample_clock="debug_transport/tclk" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="0" module_name="top" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
+    <AoCore index="0" sample_clock="clk" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="0" module_name="top" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
         <SignalList>
-            <Bus capture_enable="true" name="debug_transport/instruction[5:0]">
-                <Signal>debug_transport/instruction[5]</Signal>
-                <Signal>debug_transport/instruction[4]</Signal>
-                <Signal>debug_transport/instruction[3]</Signal>
-                <Signal>debug_transport/instruction[2]</Signal>
-                <Signal>debug_transport/instruction[1]</Signal>
-                <Signal>debug_transport/instruction[0]</Signal>
+            <Bus capture_enable="true" name="debug_module/dmi_op[1:0]">
+                <Signal>debug_module/dmi_op[1]</Signal>
+                <Signal>debug_module/dmi_op[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="debug_transport/state[3:0]">
-                <Signal>debug_transport/state[3]</Signal>
-                <Signal>debug_transport/state[2]</Signal>
-                <Signal>debug_transport/state[1]</Signal>
-                <Signal>debug_transport/state[0]</Signal>
-            </Bus>
-            <Bus capture_enable="true" name="debug_transport/next_state[3:0]">
-                <Signal>debug_transport/next_state[3]</Signal>
-                <Signal>debug_transport/next_state[2]</Signal>
-                <Signal>debug_transport/next_state[1]</Signal>
-                <Signal>debug_transport/next_state[0]</Signal>
-            </Bus>
-            <Bus capture_enable="true" name="debug_transport/ir[5:0]">
-                <Signal>debug_transport/ir[5]</Signal>
-                <Signal>debug_transport/ir[4]</Signal>
-                <Signal>debug_transport/ir[3]</Signal>
-                <Signal>debug_transport/ir[2]</Signal>
-                <Signal>debug_transport/ir[1]</Signal>
-                <Signal>debug_transport/ir[0]</Signal>
-            </Bus>
-            <Bus capture_enable="true" name="debug_transport/dr[31:0]">
-                <Signal>debug_transport/dr[31]</Signal>
-                <Signal>debug_transport/dr[30]</Signal>
-                <Signal>debug_transport/dr[29]</Signal>
-                <Signal>debug_transport/dr[28]</Signal>
-                <Signal>debug_transport/dr[27]</Signal>
-                <Signal>debug_transport/dr[26]</Signal>
-                <Signal>debug_transport/dr[25]</Signal>
-                <Signal>debug_transport/dr[24]</Signal>
-                <Signal>debug_transport/dr[23]</Signal>
-                <Signal>debug_transport/dr[22]</Signal>
-                <Signal>debug_transport/dr[21]</Signal>
-                <Signal>debug_transport/dr[20]</Signal>
-                <Signal>debug_transport/dr[19]</Signal>
-                <Signal>debug_transport/dr[18]</Signal>
-                <Signal>debug_transport/dr[17]</Signal>
-                <Signal>debug_transport/dr[16]</Signal>
-                <Signal>debug_transport/dr[15]</Signal>
-                <Signal>debug_transport/dr[14]</Signal>
-                <Signal>debug_transport/dr[13]</Signal>
-                <Signal>debug_transport/dr[12]</Signal>
-                <Signal>debug_transport/dr[11]</Signal>
-                <Signal>debug_transport/dr[10]</Signal>
-                <Signal>debug_transport/dr[9]</Signal>
-                <Signal>debug_transport/dr[8]</Signal>
-                <Signal>debug_transport/dr[7]</Signal>
-                <Signal>debug_transport/dr[6]</Signal>
-                <Signal>debug_transport/dr[5]</Signal>
-                <Signal>debug_transport/dr[4]</Signal>
-                <Signal>debug_transport/dr[3]</Signal>
-                <Signal>debug_transport/dr[2]</Signal>
-                <Signal>debug_transport/dr[1]</Signal>
-                <Signal>debug_transport/dr[0]</Signal>
-            </Bus>
-            <Bus capture_enable="true" name="debug_transport/bypass[0:0]">
-                <Signal>debug_transport/bypass[0]</Signal>
-            </Bus>
-            <Signal capture_enable="true">debug_transport/tdo</Signal>
-            <Signal capture_enable="true">debug_transport/tdo_en</Signal>
-            <Signal capture_enable="true">debug_transport/tclk</Signal>
-            <Signal capture_enable="true">debug_transport/tdi</Signal>
-            <Signal capture_enable="true">debug_transport/tms</Signal>
-            <Signal capture_enable="true">debug_transport/trst</Signal>
-            <Signal capture_enable="true">debug_transport/next_tdo</Signal>
+            <Signal capture_enable="true">debug_module/dmi_start</Signal>
         </SignalList>
         <Triggers>
             <Trigger index="0">
                 <SignalList>
-                    <Bus restorename="debug_transport/instruction[5:0]">
-                        <Signal>debug_transport/instruction[5]</Signal>
-                        <Signal>debug_transport/instruction[4]</Signal>
-                        <Signal>debug_transport/instruction[3]</Signal>
-                        <Signal>debug_transport/instruction[2]</Signal>
-                        <Signal>debug_transport/instruction[1]</Signal>
-                        <Signal>debug_transport/instruction[0]</Signal>
-                    </Bus>
+                    <Signal>debug_transport/dmi_start</Signal>
                 </SignalList>
             </Trigger>
             <Trigger index="1"/>
@@ -107,7 +33,7 @@
             <Trigger index="15"/>
         </Triggers>
         <MatchUnits>
-            <MatchUnit index="0" enabled="1" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="111111" value1="000000" trigger="0"/>
+            <MatchUnit index="0" enabled="1" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="R" value1="0" trigger="0"/>
             <MatchUnit index="1" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="2" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="3" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
@@ -128,5 +54,5 @@
             <Expression>M0</Expression>
         </Expressions>
     </AoCore>
-    <GAO_ID>0000000101011000</GAO_ID>
+    <GAO_ID>0110111100000011</GAO_ID>
 </GAO_CONFIG>
