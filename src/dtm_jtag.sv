@@ -13,11 +13,11 @@ module dtm_jtag(
     output logic [1:0] dmi_op,
     output logic [33:2] dmi_data_o,
     input logic [33:2] dmi_data_i,
-    output logic [7+33:34] dmi_address
+    output logic [7+33:34] dmi_address,
     
     // clock and reset
-    //input bit clk,
-    //input bit rst_n
+    input bit clk,
+    input bit rst_n
 );
 
 import jtag::*;
@@ -65,45 +65,43 @@ typedef enum logic [1:0] {
     EXECUTING
 } fsm_state_e;
 
-fsm_state_e fsm_state, next_fsm_state;
-logic toggle_start;
+fsm_state_e fsm_state, next_fsm_state, next_fsm_state_ff1, next_fsm_state_ff2, fsm_state_ff1, fsm_state_ff2;
 
 // FSM
-
-always_ff @(posedge tclk, negedge trst)
-    if (!trst)
-        dmi_start <= 0;
-    else
-        if (fsm_state == START)
-            dmi_start <= ~dmi_start;
-
-bit dmi_finish_prev, dmi_finish_prev2;
-always_ff @(posedge tclk, negedge trst)
+logic dmi_finish_ff1, dmi_finish_ff2;
+always_ff @(negedge tclk, negedge trst)
     if (!trst) begin
-        dmi_finish_prev <= 0;
-        dmi_finish_prev2 <= 0;
+        dmi_finish_ff1 <= 0;
+        dmi_finish_ff2 <= 0;
+        fsm_state_ff1 <= IDLE;
+        fsm_state_ff2 <= IDLE;
     end else begin
-        dmi_finish_prev <= dmi_finish;
-        dmi_finish_prev2 <= dmi_finish_prev;
+        dmi_finish_ff1 <= dmi_finish;
+        dmi_finish_ff2 <= dmi_finish_ff1;
+        fsm_state_ff1 <= fsm_state;
+        fsm_state_ff2 <= fsm_state_ff1;
     end
 
 always_comb begin
+    dmi_start = fsm_state == START;
     case(fsm_state)
-        IDLE: next_fsm_state = (state == UPDATE_DR && ir == DMI && (dmi_op == 2 || dmi_op == 1)) ? START : IDLE;
+        IDLE: next_fsm_state = (state == UPDATE_DR && ir == DMI) ? START : IDLE;
         START: next_fsm_state = EXECUTING;
-        EXECUTING: next_fsm_state = (dmi_finish_prev ^ dmi_finish_prev2) ? IDLE : EXECUTING;
+        EXECUTING: next_fsm_state = dmi_finish_ff2 ? IDLE : ((state == UPDATE_DR && ir == DTM && dr[17]) ? IDLE : EXECUTING);
         default: next_fsm_state = IDLE;
     endcase    
 end
 
-always_ff @(posedge tclk, negedge trst) begin
-    if (!trst)
+always_ff @(posedge clk, negedge rst_n) begin
+    if (!rst_n) begin
         fsm_state <= IDLE;
-    else
-        if (state == UPDATE_DR && ir == DTM && dr[17]) // dmihardreset
-            fsm_state <= IDLE;
-        else
-            fsm_state <= next_fsm_state;
+        next_fsm_state_ff1 <= IDLE;
+        next_fsm_state_ff2 <= IDLE;
+    end else begin
+        next_fsm_state_ff1 <= next_fsm_state;
+        next_fsm_state_ff2 <= next_fsm_state_ff1;
+        fsm_state <= next_fsm_state_ff2;
+    end
 end
 
 jtag_state_t state, next_state;
@@ -160,7 +158,7 @@ always_ff @(posedge tclk, negedge trst)
                 dmistat <= dmi_error;
 
 dmistat_e dmi_error;
-always_comb dmi_error = fsm_state == IDLE ? NOERROR : STILL_IN_PROGRESS;
+always_comb dmi_error = fsm_state_ff2 == IDLE ? NOERROR : STILL_IN_PROGRESS;
 
 always_ff @(posedge tclk or negedge trst) begin
     if (!trst) begin

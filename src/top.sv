@@ -89,53 +89,17 @@ logic tdo_en;
 logic [8:0] chain = {rst_n, gpio}; // readonly
 
 // Debug
-// CDC synchronizes needed between JTAG and System clock
 
-bit dmi_start_dtm;
-logic [1:0] dmi_op_dtm;
-logic [33:2] dmi_data_o_dtm, dmi_data_i_dtm;
-logic [7+33:34] dmi_address_dtm;
-logic dmi_finish_dtm;
+bit dmi_start;
+logic [1:0] dmi_op;
+logic [33:2] dmi_data_o, dmi_data_i;
+logic [7+33:34] dmi_address;
+logic dmi_finish;
 logic dtm_tdo;
-dtm_jtag debug_transport(.tdi(tdi), .trst(trst), .tms(tms), .tclk(tclk), .tdo(dtm_tdo), .tdo_en(tdo_en), .dmi_start(dmi_start_dtm), .dmi_op(dmi_op_dtm), .dmi_data_o(dmi_data_o_dtm), .dmi_address(dmi_address_dtm), .dmi_finish(dmi_finish_dtm), .dmi_data_i(dmi_data_i_dtm));
+dtm_jtag debug_transport(.tdi(tdi), .trst(trst), .tms(tms), .tclk(tclk), .tdo(dtm_tdo), .tdo_en(tdo_en), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i), .clk(clk), .rst_n(rst_n));
 
 logic ndmreset;
-bit dmi_start_dm;
-logic [1:0] dmi_op_dm;
-logic [33:2] dmi_data_o_dm, dmi_data_i_dm;
-logic [7+33:34] dmi_address_dm;
-logic dmi_finish_dm;
-dm debug_module(.haltreq(haltreq), .resumereq(resumereq), .resethaltreq(resethaltreq), .halted(halted), .running(running), .clk(clk), .rst_n(rst_n), .ndmreset(ndmreset), .dmi_start(dmi_start_dm), .dmi_op(dmi_op_dm), .dmi_data_o(dmi_data_o_dm), .dmi_address(dmi_address_dm), .dmi_finish(dmi_finish_dm), .dmi_data_i(dmi_data_i_dm));
-
-// CDC
-
-Gowin_SDPB_CDC dmi_to_dm_cdc(
-    .dout({dmi_finish_dtm, dmi_data_i_dtm}), //output [40:0] dout
-    .clka(clk), //input clka
-    .cea(1'b1), //input cea
-    .reseta(1'b0), //input reseta
-    .clkb(tclk), //input clkb
-    .ceb(1'b1), //input ceb
-    .resetb(1'b0), //input resetb
-    .oce(), //input oce
-    .ada(1'b0), //input [0:0] ada
-    .din({dmi_finish_dm, dmi_data_i_dm}), //input [40:0] din
-    .adb(1'b0) //input [0:0] adb
-);
-
-Gowin_SDPB_CDC dmi_to_dtm_cdc(
-    .dout({dmi_start_dm, dmi_op_dm, dmi_data_o_dm,dmi_address_dm}), //output [40:0] dout
-    .clka(tclk), //input clka
-    .cea(1'b1), //input cea
-    .reseta(1'b0), //input reseta
-    .clkb(clk), //input clkb
-    .ceb(1'b1), //input ceb
-    .resetb(1'b0), //input resetb
-    .oce(), //input oce
-    .ada(1'b0), //input [0:0] ada
-    .din({dmi_start_dtm, dmi_op_dtm, dmi_data_o_dtm, dmi_address_dtm}), //input [40:0] din
-    .adb(1'b0) //input [0:0] adb
-);
+dm debug_module(.haltreq(haltreq), .resumereq(resumereq), .resethaltreq(resethaltreq), .halted(halted), .running(running), .clk(clk), .rst_n(rst_n), .ndmreset(ndmreset), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i));
 
 TBUF jtag_tdo (
   .I    (dtm_tdo),      // Input data

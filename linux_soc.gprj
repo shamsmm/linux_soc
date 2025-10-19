@@ -9,9 +9,7 @@
         <File path="src/dtm_jtag.sv" type="file.verilog" enable="1"/>
         <File path="src/gowin_clkdiv/gowin_clkdiv.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_dpb/gowin_dpb.v" type="file.verilog" enable="1"/>
-        <File path="src/gowin_dpb_cdc/gowin_dpb_cdc.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_prom/gowin_prom.v" type="file.verilog" enable="1"/>
-        <File path="src/gowin_sdpb_cdc/gowin_sdpb_cdc.v" type="file.verilog" enable="1"/>
         <File path="src/gpio_wrapped.sv" type="file.verilog" enable="1"/>
         <File path="src/interconnect/dbus_interconnect.sv" type="file.verilog" enable="1"/>
         <File path="src/interconnect/ibus_interconnect.sv" type="file.verilog" enable="1"/>
@@ -32,6 +30,6 @@
         <File path="src/top.sv" type="file.verilog" enable="1"/>
         <File path="src/linux_soc.cst" type="file.cst" enable="1"/>
         <File path="src/linux_soc.sdc" type="file.sdc" enable="1"/>
-        <File path="src/linux_soc.rao" type="file.gao" enable="1"/>
+        <File path="src/linux_soc.rao" type="file.gao" enable="0"/>
     </FileList>
 </Project>
