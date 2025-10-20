@@ -31,6 +31,6 @@
         <File path="src/top.sv" type="file.verilog" enable="1"/>
         <File path="src/linux_soc.cst" type="file.cst" enable="1"/>
         <File path="src/linux_soc.sdc" type="file.sdc" enable="1"/>
-        <File path="src/linux_soc.rao" type="file.gao" enable="1"/>
+        <File path="src/linux_soc.rao" type="file.gao" enable="0"/>
     </FileList>
 </Project>

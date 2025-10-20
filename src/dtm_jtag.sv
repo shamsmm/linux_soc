@@ -68,7 +68,7 @@ typedef enum logic [1:0] {
 
 fsm_state_e fsm_state, next_fsm_state;
 logic [1:0] fsm_state_ff2, next_fsm_state_ff2;
-
+`define VERILATOR
 `ifdef VERILATOR
 // Simulation-only double flip-flop synchronizer (clk -> tclk)
 reg [1:0] fsm_state_ff1;
@@ -169,6 +169,15 @@ always_ff @(negedge tclk, negedge trst)
             end
         endcase
 
+logic [40:0] dr_ff1, dr_ff2;
+
+always @(posedge clk) begin
+    dr_ff1 <= dr;     // First sync stage
+    dr_ff2 <= dr_ff1; // Second sync stage
+end
+
+always_comb {dmi_address, dmi_data_o, dmi_op} = dr_ff2;
+
 always_ff @(negedge tclk, negedge trst)
     if (!trst) begin
         ir <= IDCODE;
@@ -182,7 +191,8 @@ always_ff @(negedge tclk, negedge trst)
             UPDATE_IR: ir <= jtag_instruction_t'(ir_shift);
             UPDATE_DR: case(ir)
                 //DTM: dtmcs[17:16] <= dr[17:16]; // only writable fields
-                DMI: {dmi_address, dmi_data_o, dmi_op} <= dr[7+33:0]; // another fsm starts the transaction
+                //DMI: {dmi_address, dmi_data_o, dmi_op} <= dr; // another fsm starts the transaction // always update dmi
+                default:;
             endcase
         endcase
 

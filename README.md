@@ -46,3 +46,10 @@ Info : JTAG tap: mychip.tap tap/device found: 0x1beef001 (mfg: 0x000 (<invalid>)
     ```
     --disassembler-options=no-aliases
     ```
+
+## OpenOCD Hlpful COmmands
+```
+jtag arp_init
+irscan auto0.tap 0x11
+drscan auto0.tap 41 0x04200000002
+```

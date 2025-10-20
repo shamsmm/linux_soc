@@ -2,15 +2,183 @@
 <GAO_CONFIG>
     <Version>3.0</Version>
     <Mode>Standard</Mode>
-    <AoCore index="0" sample_clock="clk" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="0" module_name="top" force_trigger_by_falling_edge="false" capture_init_data_enabled="true">
+    <AoCore index="0" sample_clock="sysclk" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="0" module_name="top" force_trigger_by_falling_edge="true" capture_init_data_enabled="false">
         <SignalList>
+            <Bus capture_enable="true" name="debug_transport/tclk_signals.state[3:0]">
+                <Signal>debug_transport/tclk_signals.state[3]</Signal>
+                <Signal>debug_transport/tclk_signals.state[2]</Signal>
+                <Signal>debug_transport/tclk_signals.state[1]</Signal>
+                <Signal>debug_transport/tclk_signals.state[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="debug_transport/tclk_signals.ir[5:0]">
+                <Signal>debug_transport/tclk_signals.ir[5]</Signal>
+                <Signal>debug_transport/tclk_signals.ir[4]</Signal>
+                <Signal>debug_transport/tclk_signals.ir[3]</Signal>
+                <Signal>debug_transport/tclk_signals.ir[2]</Signal>
+                <Signal>debug_transport/tclk_signals.ir[1]</Signal>
+                <Signal>debug_transport/tclk_signals.ir[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="debug_transport/tclk_signals.dmiop[1:0]">
+                <Signal>debug_transport/tclk_signals.dmiop[1]</Signal>
+                <Signal>debug_transport/tclk_signals.dmiop[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="debug_transport/tclk_signals_ff2.state[3:0]">
+                <Signal>debug_transport/tclk_signals_ff2.state[3]</Signal>
+                <Signal>debug_transport/tclk_signals_ff2.state[2]</Signal>
+                <Signal>debug_transport/tclk_signals_ff2.state[1]</Signal>
+                <Signal>debug_transport/tclk_signals_ff2.state[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="debug_transport/tclk_signals_ff2.ir[5:0]">
+                <Signal>debug_transport/tclk_signals_ff2.ir[5]</Signal>
+                <Signal>debug_transport/tclk_signals_ff2.ir[4]</Signal>
+                <Signal>debug_transport/tclk_signals_ff2.ir[3]</Signal>
+                <Signal>debug_transport/tclk_signals_ff2.ir[2]</Signal>
+                <Signal>debug_transport/tclk_signals_ff2.ir[1]</Signal>
+                <Signal>debug_transport/tclk_signals_ff2.ir[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="debug_transport/tclk_signals_ff2.dmiop[1:0]">
+                <Signal>debug_transport/tclk_signals_ff2.dmiop[1]</Signal>
+                <Signal>debug_transport/tclk_signals_ff2.dmiop[0]</Signal>
+            </Bus>
+            <Signal capture_enable="true">debug_transport/tclk</Signal>
+            <Signal capture_enable="true">debug_transport/tms</Signal>
+            <Signal capture_enable="true">dmi_start</Signal>
+            <Signal capture_enable="true">dmi_finish</Signal>
             <Bus capture_enable="true" name="dmi_op[1:0]">
                 <Signal>dmi_op[1]</Signal>
                 <Signal>dmi_op[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="dmi_data_o[33:2]">
-                <Signal>dmi_data_o[33]</Signal>
-                <Signal>dmi_data_o[32]</Signal>
+            <Signal capture_enable="true">clk</Signal>
+            <Bus capture_enable="true" name="debug_transport/dr[40:0]">
+                <Signal>debug_transport/dr[40]</Signal>
+                <Signal>debug_transport/dr[39]</Signal>
+                <Signal>debug_transport/dr[38]</Signal>
+                <Signal>debug_transport/dr[37]</Signal>
+                <Signal>debug_transport/dr[36]</Signal>
+                <Signal>debug_transport/dr[35]</Signal>
+                <Signal>debug_transport/dr[34]</Signal>
+                <Signal>debug_transport/dr[33]</Signal>
+                <Signal>debug_transport/dr[32]</Signal>
+                <Signal>debug_transport/dr[31]</Signal>
+                <Signal>debug_transport/dr[30]</Signal>
+                <Signal>debug_transport/dr[29]</Signal>
+                <Signal>debug_transport/dr[28]</Signal>
+                <Signal>debug_transport/dr[27]</Signal>
+                <Signal>debug_transport/dr[26]</Signal>
+                <Signal>debug_transport/dr[25]</Signal>
+                <Signal>debug_transport/dr[24]</Signal>
+                <Signal>debug_transport/dr[23]</Signal>
+                <Signal>debug_transport/dr[22]</Signal>
+                <Signal>debug_transport/dr[21]</Signal>
+                <Signal>debug_transport/dr[20]</Signal>
+                <Signal>debug_transport/dr[19]</Signal>
+                <Signal>debug_transport/dr[18]</Signal>
+                <Signal>debug_transport/dr[17]</Signal>
+                <Signal>debug_transport/dr[16]</Signal>
+                <Signal>debug_transport/dr[15]</Signal>
+                <Signal>debug_transport/dr[14]</Signal>
+                <Signal>debug_transport/dr[13]</Signal>
+                <Signal>debug_transport/dr[12]</Signal>
+                <Signal>debug_transport/dr[11]</Signal>
+                <Signal>debug_transport/dr[10]</Signal>
+                <Signal>debug_transport/dr[9]</Signal>
+                <Signal>debug_transport/dr[8]</Signal>
+                <Signal>debug_transport/dr[7]</Signal>
+                <Signal>debug_transport/dr[6]</Signal>
+                <Signal>debug_transport/dr[5]</Signal>
+                <Signal>debug_transport/dr[4]</Signal>
+                <Signal>debug_transport/dr[3]</Signal>
+                <Signal>debug_transport/dr[2]</Signal>
+                <Signal>debug_transport/dr[1]</Signal>
+                <Signal>debug_transport/dr[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="debug_transport/dr_ff1[40:0]">
+                <Signal>debug_transport/dr_ff1[40]</Signal>
+                <Signal>debug_transport/dr_ff1[39]</Signal>
+                <Signal>debug_transport/dr_ff1[38]</Signal>
+                <Signal>debug_transport/dr_ff1[37]</Signal>
+                <Signal>debug_transport/dr_ff1[36]</Signal>
+                <Signal>debug_transport/dr_ff1[35]</Signal>
+                <Signal>debug_transport/dr_ff1[34]</Signal>
+                <Signal>debug_transport/dr_ff1[33]</Signal>
+                <Signal>debug_transport/dr_ff1[32]</Signal>
+                <Signal>debug_transport/dr_ff1[31]</Signal>
+                <Signal>debug_transport/dr_ff1[30]</Signal>
+                <Signal>debug_transport/dr_ff1[29]</Signal>
+                <Signal>debug_transport/dr_ff1[28]</Signal>
+                <Signal>debug_transport/dr_ff1[27]</Signal>
+                <Signal>debug_transport/dr_ff1[26]</Signal>
+                <Signal>debug_transport/dr_ff1[25]</Signal>
+                <Signal>debug_transport/dr_ff1[24]</Signal>
+                <Signal>debug_transport/dr_ff1[23]</Signal>
+                <Signal>debug_transport/dr_ff1[22]</Signal>
+                <Signal>debug_transport/dr_ff1[21]</Signal>
+                <Signal>debug_transport/dr_ff1[20]</Signal>
+                <Signal>debug_transport/dr_ff1[19]</Signal>
+                <Signal>debug_transport/dr_ff1[18]</Signal>
+                <Signal>debug_transport/dr_ff1[17]</Signal>
+                <Signal>debug_transport/dr_ff1[16]</Signal>
+                <Signal>debug_transport/dr_ff1[15]</Signal>
+                <Signal>debug_transport/dr_ff1[14]</Signal>
+                <Signal>debug_transport/dr_ff1[13]</Signal>
+                <Signal>debug_transport/dr_ff1[12]</Signal>
+                <Signal>debug_transport/dr_ff1[11]</Signal>
+                <Signal>debug_transport/dr_ff1[10]</Signal>
+                <Signal>debug_transport/dr_ff1[9]</Signal>
+                <Signal>debug_transport/dr_ff1[8]</Signal>
+                <Signal>debug_transport/dr_ff1[7]</Signal>
+                <Signal>debug_transport/dr_ff1[6]</Signal>
+                <Signal>debug_transport/dr_ff1[5]</Signal>
+                <Signal>debug_transport/dr_ff1[4]</Signal>
+                <Signal>debug_transport/dr_ff1[3]</Signal>
+                <Signal>debug_transport/dr_ff1[2]</Signal>
+                <Signal>debug_transport/dr_ff1[1]</Signal>
+                <Signal>debug_transport/dr_ff1[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="debug_transport/dr_ff2[40:0]">
+                <Signal>debug_transport/dr_ff2[40]</Signal>
+                <Signal>debug_transport/dr_ff2[39]</Signal>
+                <Signal>debug_transport/dr_ff2[38]</Signal>
+                <Signal>debug_transport/dr_ff2[37]</Signal>
+                <Signal>debug_transport/dr_ff2[36]</Signal>
+                <Signal>debug_transport/dr_ff2[35]</Signal>
+                <Signal>debug_transport/dr_ff2[34]</Signal>
+                <Signal>debug_transport/dr_ff2[33]</Signal>
+                <Signal>debug_transport/dr_ff2[32]</Signal>
+                <Signal>debug_transport/dr_ff2[31]</Signal>
+                <Signal>debug_transport/dr_ff2[30]</Signal>
+                <Signal>debug_transport/dr_ff2[29]</Signal>
+                <Signal>debug_transport/dr_ff2[28]</Signal>
+                <Signal>debug_transport/dr_ff2[27]</Signal>
+                <Signal>debug_transport/dr_ff2[26]</Signal>
+                <Signal>debug_transport/dr_ff2[25]</Signal>
+                <Signal>debug_transport/dr_ff2[24]</Signal>
+                <Signal>debug_transport/dr_ff2[23]</Signal>
+                <Signal>debug_transport/dr_ff2[22]</Signal>
+                <Signal>debug_transport/dr_ff2[21]</Signal>
+                <Signal>debug_transport/dr_ff2[20]</Signal>
+                <Signal>debug_transport/dr_ff2[19]</Signal>
+                <Signal>debug_transport/dr_ff2[18]</Signal>
+                <Signal>debug_transport/dr_ff2[17]</Signal>
+                <Signal>debug_transport/dr_ff2[16]</Signal>
+                <Signal>debug_transport/dr_ff2[15]</Signal>
+                <Signal>debug_transport/dr_ff2[14]</Signal>
+                <Signal>debug_transport/dr_ff2[13]</Signal>
+                <Signal>debug_transport/dr_ff2[12]</Signal>
+                <Signal>debug_transport/dr_ff2[11]</Signal>
+                <Signal>debug_transport/dr_ff2[10]</Signal>
+                <Signal>debug_transport/dr_ff2[9]</Signal>
+                <Signal>debug_transport/dr_ff2[8]</Signal>
+                <Signal>debug_transport/dr_ff2[7]</Signal>
+                <Signal>debug_transport/dr_ff2[6]</Signal>
+                <Signal>debug_transport/dr_ff2[5]</Signal>
+                <Signal>debug_transport/dr_ff2[4]</Signal>
+                <Signal>debug_transport/dr_ff2[3]</Signal>
+                <Signal>debug_transport/dr_ff2[2]</Signal>
+                <Signal>debug_transport/dr_ff2[1]</Signal>
+                <Signal>debug_transport/dr_ff2[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="dmi_data_o[31:0]">
                 <Signal>dmi_data_o[31]</Signal>
                 <Signal>dmi_data_o[30]</Signal>
                 <Signal>dmi_data_o[29]</Signal>
@@ -41,32 +209,37 @@
                 <Signal>dmi_data_o[4]</Signal>
                 <Signal>dmi_data_o[3]</Signal>
                 <Signal>dmi_data_o[2]</Signal>
+                <Signal>dmi_data_o[1]</Signal>
+                <Signal>dmi_data_o[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="dmi_address[40:34]">
-                <Signal>dmi_address[40]</Signal>
-                <Signal>dmi_address[39]</Signal>
-                <Signal>dmi_address[38]</Signal>
-                <Signal>dmi_address[37]</Signal>
-                <Signal>dmi_address[36]</Signal>
-                <Signal>dmi_address[35]</Signal>
-                <Signal>dmi_address[34]</Signal>
+            <Bus capture_enable="true" name="dmi_address[6:0]">
+                <Signal>dmi_address[6]</Signal>
+                <Signal>dmi_address[5]</Signal>
+                <Signal>dmi_address[4]</Signal>
+                <Signal>dmi_address[3]</Signal>
+                <Signal>dmi_address[2]</Signal>
+                <Signal>dmi_address[1]</Signal>
+                <Signal>dmi_address[0]</Signal>
             </Bus>
-            <Signal capture_enable="true">debug_module/dmi_start</Signal>
-            <Signal capture_enable="true">debug_module/dmi_finish</Signal>
-            <Bus capture_enable="true" name="debug_module/state[1:0]">
-                <Signal>debug_module/state[1]</Signal>
-                <Signal>debug_module/state[0]</Signal>
+            <Bus capture_enable="true" name="debug_transport/dmi_address[40:34]">
+                <Signal>debug_transport/dmi_address[40]</Signal>
+                <Signal>debug_transport/dmi_address[39]</Signal>
+                <Signal>debug_transport/dmi_address[38]</Signal>
+                <Signal>debug_transport/dmi_address[37]</Signal>
+                <Signal>debug_transport/dmi_address[36]</Signal>
+                <Signal>debug_transport/dmi_address[35]</Signal>
+                <Signal>debug_transport/dmi_address[34]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="debug_transport/fsm_state[1:0]">
-                <Signal>debug_transport/fsm_state[1]</Signal>
-                <Signal>debug_transport/fsm_state[0]</Signal>
-            </Bus>
-            <Signal capture_enable="true">debug_transport/tclk</Signal>
         </SignalList>
         <Triggers>
             <Trigger index="0">
                 <SignalList>
-                    <Signal>tms</Signal>
+                    <Bus restorename="debug_transport/state[3:0]">
+                        <Signal>debug_transport/state[3]</Signal>
+                        <Signal>debug_transport/state[2]</Signal>
+                        <Signal>debug_transport/state[1]</Signal>
+                        <Signal>debug_transport/state[0]</Signal>
+                    </Bus>
                 </SignalList>
             </Trigger>
             <Trigger index="1"/>
@@ -86,7 +259,7 @@
             <Trigger index="15"/>
         </Triggers>
         <MatchUnits>
-            <MatchUnit index="0" enabled="1" match_type="3" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="F" value1="0" trigger="0"/>
+            <MatchUnit index="0" enabled="1" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="0101" value1="0000" trigger="0"/>
             <MatchUnit index="1" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="2" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="3" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
@@ -107,5 +280,5 @@
             <Expression>M0</Expression>
         </Expressions>
     </AoCore>
-    <GAO_ID>0000110110110100</GAO_ID>
+    <GAO_ID>0001010010101000</GAO_ID>
 </GAO_CONFIG>
