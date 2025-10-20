@@ -2,18 +2,71 @@
 <GAO_CONFIG>
     <Version>3.0</Version>
     <Mode>Standard</Mode>
-    <AoCore index="0" sample_clock="clk" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="0" module_name="top" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
+    <AoCore index="0" sample_clock="clk" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="0" module_name="top" force_trigger_by_falling_edge="false" capture_init_data_enabled="true">
         <SignalList>
-            <Bus capture_enable="true" name="debug_module/dmi_op[1:0]">
-                <Signal>debug_module/dmi_op[1]</Signal>
-                <Signal>debug_module/dmi_op[0]</Signal>
+            <Bus capture_enable="true" name="dmi_op[1:0]">
+                <Signal>dmi_op[1]</Signal>
+                <Signal>dmi_op[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="dmi_data_o[33:2]">
+                <Signal>dmi_data_o[33]</Signal>
+                <Signal>dmi_data_o[32]</Signal>
+                <Signal>dmi_data_o[31]</Signal>
+                <Signal>dmi_data_o[30]</Signal>
+                <Signal>dmi_data_o[29]</Signal>
+                <Signal>dmi_data_o[28]</Signal>
+                <Signal>dmi_data_o[27]</Signal>
+                <Signal>dmi_data_o[26]</Signal>
+                <Signal>dmi_data_o[25]</Signal>
+                <Signal>dmi_data_o[24]</Signal>
+                <Signal>dmi_data_o[23]</Signal>
+                <Signal>dmi_data_o[22]</Signal>
+                <Signal>dmi_data_o[21]</Signal>
+                <Signal>dmi_data_o[20]</Signal>
+                <Signal>dmi_data_o[19]</Signal>
+                <Signal>dmi_data_o[18]</Signal>
+                <Signal>dmi_data_o[17]</Signal>
+                <Signal>dmi_data_o[16]</Signal>
+                <Signal>dmi_data_o[15]</Signal>
+                <Signal>dmi_data_o[14]</Signal>
+                <Signal>dmi_data_o[13]</Signal>
+                <Signal>dmi_data_o[12]</Signal>
+                <Signal>dmi_data_o[11]</Signal>
+                <Signal>dmi_data_o[10]</Signal>
+                <Signal>dmi_data_o[9]</Signal>
+                <Signal>dmi_data_o[8]</Signal>
+                <Signal>dmi_data_o[7]</Signal>
+                <Signal>dmi_data_o[6]</Signal>
+                <Signal>dmi_data_o[5]</Signal>
+                <Signal>dmi_data_o[4]</Signal>
+                <Signal>dmi_data_o[3]</Signal>
+                <Signal>dmi_data_o[2]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="dmi_address[40:34]">
+                <Signal>dmi_address[40]</Signal>
+                <Signal>dmi_address[39]</Signal>
+                <Signal>dmi_address[38]</Signal>
+                <Signal>dmi_address[37]</Signal>
+                <Signal>dmi_address[36]</Signal>
+                <Signal>dmi_address[35]</Signal>
+                <Signal>dmi_address[34]</Signal>
             </Bus>
             <Signal capture_enable="true">debug_module/dmi_start</Signal>
+            <Signal capture_enable="true">debug_module/dmi_finish</Signal>
+            <Bus capture_enable="true" name="debug_module/state[1:0]">
+                <Signal>debug_module/state[1]</Signal>
+                <Signal>debug_module/state[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="debug_transport/fsm_state[1:0]">
+                <Signal>debug_transport/fsm_state[1]</Signal>
+                <Signal>debug_transport/fsm_state[0]</Signal>
+            </Bus>
+            <Signal capture_enable="true">debug_transport/tclk</Signal>
         </SignalList>
         <Triggers>
             <Trigger index="0">
                 <SignalList>
-                    <Signal>debug_transport/dmi_start</Signal>
+                    <Signal>tms</Signal>
                 </SignalList>
             </Trigger>
             <Trigger index="1"/>
@@ -33,7 +86,7 @@
             <Trigger index="15"/>
         </Triggers>
         <MatchUnits>
-            <MatchUnit index="0" enabled="1" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="R" value1="0" trigger="0"/>
+            <MatchUnit index="0" enabled="1" match_type="3" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="F" value1="0" trigger="0"/>
             <MatchUnit index="1" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="2" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="3" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
@@ -54,5 +107,5 @@
             <Expression>M0</Expression>
         </Expressions>
     </AoCore>
-    <GAO_ID>0110111100000011</GAO_ID>
+    <GAO_ID>0000110110110100</GAO_ID>
 </GAO_CONFIG>

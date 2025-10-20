@@ -62,32 +62,49 @@ typedef struct packed {
 typedef enum logic [1:0] {
     IDLE,
     START,
-    EXECUTING
+    EXECUTING,
+    FINISH
 } fsm_state_e;
 
-fsm_state_e fsm_state, next_fsm_state, next_fsm_state_ff1, next_fsm_state_ff2, fsm_state_ff1, fsm_state_ff2;
+fsm_state_e fsm_state, next_fsm_state;
+logic [1:0] fsm_state_ff2, next_fsm_state_ff2;
 
-// FSM
-logic dmi_finish_ff1, dmi_finish_ff2;
-always_ff @(negedge tclk, negedge trst)
-    if (!trst) begin
-        dmi_finish_ff1 <= 0;
-        dmi_finish_ff2 <= 0;
-        fsm_state_ff1 <= IDLE;
-        fsm_state_ff2 <= IDLE;
-    end else begin
-        dmi_finish_ff1 <= dmi_finish;
-        dmi_finish_ff2 <= dmi_finish_ff1;
-        fsm_state_ff1 <= fsm_state;
-        fsm_state_ff2 <= fsm_state_ff1;
-    end
+`ifdef VERILATOR
+// Simulation-only double flip-flop synchronizer (clk -> tclk)
+reg [1:0] fsm_state_ff1;
+
+always @(posedge tclk) begin
+    fsm_state_ff1 <= fsm_state;     // First sync stage
+    fsm_state_ff2 <= fsm_state_ff1; // Second sync stage
+end
+`else
+// Real hardware FIFO instance for CDC
+FIFO_HS_Top fsm_state_cdc(
+    .Data(fsm_state),
+    .WrClk(clk),
+    .RdClk(tclk),
+    .WrEn(1'b1),
+    .RdEn(1'b1),
+    .Almost_Empty(),
+    .Almost_Full(),
+    .Q(fsm_state_ff2),
+    .Empty(),
+    .Full()
+);
+`endif
+
+struct packed {jtag_state_t state; logic[5:0] ir; logic [1:0] dmiop; logic dmihardreset;} tclk_signals, tclk_signals_ff2;
+
+always_comb tclk_signals = {state, ir, dr[1:0], dr[17]};
 
 always_comb begin
     dmi_start = fsm_state == START;
+
     case(fsm_state)
-        IDLE: next_fsm_state = (state == UPDATE_DR && ir == DMI) ? START : IDLE;
+        IDLE: next_fsm_state = (tclk_signals_ff2.state == UPDATE_DR && tclk_signals_ff2.ir == DMI && (tclk_signals_ff2.dmiop == 2'd1 || tclk_signals_ff2.dmiop == 2'd2)) ? START : IDLE;
         START: next_fsm_state = EXECUTING;
-        EXECUTING: next_fsm_state = dmi_finish_ff2 ? IDLE : ((state == UPDATE_DR && ir == DTM && dr[17]) ? IDLE : EXECUTING);
+        EXECUTING: next_fsm_state = dmi_finish ? FINISH : EXECUTING;
+        FINISH: next_fsm_state = tclk_signals_ff2.state != UPDATE_DR ? IDLE : FINISH;
         default: next_fsm_state = IDLE;
     endcase    
 end
@@ -95,14 +112,37 @@ end
 always_ff @(posedge clk, negedge rst_n) begin
     if (!rst_n) begin
         fsm_state <= IDLE;
-        next_fsm_state_ff1 <= IDLE;
-        next_fsm_state_ff2 <= IDLE;
     end else begin
-        next_fsm_state_ff1 <= next_fsm_state;
-        next_fsm_state_ff2 <= next_fsm_state_ff1;
-        fsm_state <= next_fsm_state_ff2;
+        if (tclk_signals_ff2.state == UPDATE_DR && tclk_signals_ff2.ir == DTM && tclk_signals_ff2.dmihardreset)
+            fsm_state <= IDLE;
+        else
+            fsm_state <= next_fsm_state;
     end
 end
+
+`ifdef VERILATOR
+// Define internal synchronization registers
+struct packed {jtag_state_t state; logic[5:0] ir; logic [1:0] dmiop; logic dmihardreset;} tclk_signals_ff1; //4+6+2+1 13 bits to cross domain
+
+always @(posedge clk) begin
+    tclk_signals_ff1 <= tclk_signals;     // First stage sync
+    tclk_signals_ff2 <= tclk_signals_ff1; // Second stage sync
+end
+`else
+// Actual hardware FIFO instance for CDC
+FIFO_HS_Top next_fsm_state_cdc(
+    .Data({tclk_signals.state, tclk_signals.ir, tclk_signals.dmiop, tclk_signals.dmihardreset}),
+    .WrClk(tclk),
+    .RdClk(clk),
+    .WrEn(1'b1),
+    .RdEn(1'b1),
+    .Almost_Empty(),
+    .Almost_Full(),
+    .Q(tclk_signals_ff2),
+    .Empty(),
+    .Full()
+);
+`endif
 
 jtag_state_t state, next_state;
 jtag_instruction_t ir;
@@ -158,7 +198,7 @@ always_ff @(posedge tclk, negedge trst)
                 dmistat <= dmi_error;
 
 dmistat_e dmi_error;
-always_comb dmi_error = fsm_state_ff2 == IDLE ? NOERROR : STILL_IN_PROGRESS;
+always_comb dmi_error = fsm_state_e'(fsm_state_ff2) == IDLE ? NOERROR : STILL_IN_PROGRESS;
 
 always_ff @(posedge tclk or negedge trst) begin
     if (!trst) begin
