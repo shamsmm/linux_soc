@@ -19,11 +19,13 @@ module dm(
     // abstract command
     output access_register_command_control_t dbg_arcc,
     input logic [31:0] dbg_regout,
+    output logic [31:0] dbg_rwrdata,
 
     // Platform 
     output bit ndmreset,
 
     // System Bus
+    master_bus_if.master dbus,
 
     // reset and clock
     input bit clk,
@@ -73,7 +75,7 @@ typedef enum logic [2:0] {
     ANOTSUPPORTED,
     AREGACCESS,
     AEXECUTING,
-    AFINISH
+    AFINISHREGACCESS
 } astate_e;
 
 astate_e astate, next_astate;
@@ -85,12 +87,15 @@ always_ff @(posedge clk, negedge rst_n)
         astate <= next_astate;
 
 always_comb begin
+    dbg_rwrdata = data0; // in Register Access
+
     case(astate)
         AIDLE: next_astate = dmi_start && dmi_op == 2 && dmi_address == 7'h17 ? APARSE : AIDLE;
         APARSE: next_astate = command.cmdtype == 0 ? AREGACCESS : ANOTSUPPORTED;
         ANOTSUPPORTED: next_astate = AIDLE;
-        AREGACCESS: next_astate = AFINISH;
-        AFINISH: next_astate = AIDLE;
+        AREGACCESS: next_astate = AFINISHREGACCESS;
+        AFINISHREGACCESS: next_astate = AIDLE;
+        default: next_astate = AIDLE;
     endcase
 end
 
@@ -101,6 +106,8 @@ always_comb begin
     else
         dbg_arcc = 0;
 end
+        
+logic anyhavereset;
 
 always_comb begin
     ndmreset = dmcontrol.ndmreset;
@@ -115,7 +122,7 @@ always_comb begin
     dmstatus.allrunning = dmstatus.anyrunning; // only single hart
     dmstatus.anyresumeack = running; // hack?
     dmstatus.allresumeack = dmstatus.anyresumeack;
-    dmstatus.anyhavereset = running; // hack?
+    dmstatus.anyhavereset = anyhavereset;
     dmstatus.allhavereset = dmstatus.anyhavereset;
 
     hartinfo.nscratch = 2;
@@ -154,26 +161,51 @@ always_ff @(posedge clk, negedge rst_n)
         resumereq <= 0;
         haltreq <= 0;
         abstractcs <= {3'h0, 5'd3, 11'h0, 1'b0, 1'h0, 3'h0, 4'h0, 4'h3};
+        anyhavereset <= 0;
     end else begin
         // Register access read into data(0-2)?
+        if (astate == AFINISHREGACCESS && dbg_arcc.transfer & !dbg_arcc.write) // read from it
+            data0 <= dbg_regout;
         
+        if ((dmi_address == 7'h17 || dmi_address == 7'h16 || dmi_address == 7'h18) && dmi_start && dmi_op == 2 || dmi_start && (dmi_address == 7'h04 || dmi_address == 7'h05 || dmi_address == 7'h06))
+            abstractcs.cmderr <= 3'd1;
+
+        if (astate == ANOTSUPPORTED)
+            abstractcs.cmderr <= 3'd2;
 
         if (dmi_start && dmi_op == 2) begin
             case(dmi_address)
                 7'h10: begin
-                    if (dmi_data_o_dmcontrol.setresethaltreq) begin
-                        resethaltreq <= 1;
-                    end else if(dmi_data_o_dmcontrol.clrresethaltreq) begin
+                    if (!dmi_data_o_dmcontrol.dmactive) begin
+                        // reset DM
+                        dmcontrol <= 0;
                         resethaltreq <= 0;
-                    end if (dmi_data_o_dmcontrol.resumereq & halted) begin
-                        haltreq <= 0;
-                        resumereq <= 1;
-                    end else if (dmi_data_o_dmcontrol.haltreq) begin
-                        haltreq <= 1;
                         resumereq <= 0;
-                    end
+                        haltreq <= 0;
+                        abstractcs <= {3'h0, 5'd3, 11'h0, 1'b0, 1'h0, 3'h0, 4'h0, 4'h3};
+                    end else begin
+                        if (dmi_data_o_dmcontrol.setresethaltreq) begin
+                            resethaltreq <= 1;
+                        end else if(dmi_data_o_dmcontrol.clrresethaltreq) begin
+                            resethaltreq <= 0;
+                        end 
+                        
+                        if (dmi_data_o_dmcontrol.ackhavereset) begin
+                            anyhavereset <= 0;
+                        end else begin
+                            anyhavereset <= dmi_data_o_dmcontrol.ndmreset; // instantaneous reset
+                        end
 
-                    dmcontrol <= dmi_data_o&41'h1; // only ndmreset
+                        if (dmi_data_o_dmcontrol.resumereq & halted) begin
+                            haltreq <= 0;
+                            resumereq <= 1;
+                        end else if (dmi_data_o_dmcontrol.haltreq) begin
+                            haltreq <= 1;
+                            resumereq <= 0;
+                        end
+
+                        dmcontrol <= dmi_data_o&41'b11; // only ndmreset and dmactive are read and write
+                    end
                 end
                 7'h16: begin
                     if (dmi_data_o_abstracts.cmderr == 1)

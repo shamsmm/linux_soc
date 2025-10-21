@@ -27,6 +27,7 @@ Gowin_CLKDIV divider0 (
 
 // riscv32 core-0 master interfaces to I-bus and D-bus
 master_bus_if dbus_if_core0(clk, rst_n);
+master_bus_if dbus_if_dm0(clk, rst_n);
 master_bus_if ibus_if_core0(clk, rst_n);
 
 // dual port memory interface to I-bus and D-bus 
@@ -60,7 +61,10 @@ rv_core #(.INITIAL_PC(32'h2000_0000)) core0(
     .irq_ext(irq_ext0),
     .irq_timer(irq_timer0),
     .halted(halted),
-    .running(running)
+    .running(running),
+    .dbg_arcc(dbg_arcc),
+    .dbg_regout(dbg_regout),
+    .dbg_rwrdata(dbg_rwrdata)
 );
 
 // clint
@@ -99,7 +103,7 @@ logic dtm_tdo;
 dtm_jtag debug_transport(.tdi(tdi), .trst(trst), .tms(tms), .tclk(tclk), .tdo(dtm_tdo), .tdo_en(tdo_en), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i), .clk(clk), .rst_n(rst_n));
 
 logic ndmreset;
-dm debug_module(.haltreq(haltreq), .resumereq(resumereq), .resethaltreq(resethaltreq), .halted(halted), .running(running), .clk(clk), .rst_n(rst_n), .ndmreset(ndmreset), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i));
+dm debug_module(.haltreq(haltreq), .resumereq(resumereq), .resethaltreq(resethaltreq), .halted(halted), .running(running), .clk(clk), .rst_n(rst_n), .ndmreset(ndmreset), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i), .dbus(dbus_if_dm0), .dbg_arcc(dbg_arcc), .dbg_regout(dbg_regout), .dbg_rwrdata(dbg_rwrdata));
 
 TBUF jtag_tdo (
   .I    (dtm_tdo),      // Input data
