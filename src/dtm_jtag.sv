@@ -181,7 +181,7 @@ always_comb {dmi_address, dmi_data_o, dmi_op} = dr_ff2;
 always_ff @(negedge tclk, negedge trst)
     if (!trst) begin
         ir <= IDCODE;
-        dtmcs.version <= 0;
+        dtmcs.version <= 1;
         dtmcs.abits <= 7;
         //dtmcs.dmistat <= NOERROR;
         dtmcs.idle <= 3; // Wait a lot

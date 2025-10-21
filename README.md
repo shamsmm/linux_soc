@@ -53,3 +53,14 @@ jtag arp_init
 irscan auto0.tap 0x11
 drscan auto0.tap 41 0x04200000002
 ```
+
+## Misc
+ChatGPT wasted 4 days of my life because it couldn't concatenate numbers.
+```
+iverilog -o sim concat.v && vvp sim
+```
+
+## Important
+DTM has a version
+DM has a version
+both independently so OpenOCD may break if not correct in hardware
