@@ -47,6 +47,10 @@ Info : JTAG tap: mychip.tap tap/device found: 0x1beef001 (mfg: 0x000 (<invalid>)
     --disassembler-options=no-aliases
     ```
 
+```
+riscv64-unknown-elf-objdump --disassembler-options=no-aliases -D test.elf
+```
+
 ## OpenOCD Hlpful COmmands
 ```
 jtag arp_init
