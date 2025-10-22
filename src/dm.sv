@@ -33,7 +33,6 @@ module dm(
 );
 
 logic [31:0] data0, data1, data2, sbaddress0, sbdata0;
-logic [31:0] progbuf [0:4];
 dmcontrol_t dmcontrol;
 abstractcs_t abstractcs;
 hartinfo_t hartinfo;
@@ -69,13 +68,18 @@ always_ff @(posedge clk, negedge rst_n)
 
 
 // abstract FSM
-typedef enum logic [2:0] {
+typedef enum logic [3:0] {
     AIDLE,
     APARSE,
     ANOTSUPPORTED,
     AREGACCESS,
     AEXECUTING,
-    AFINISHREGACCESS
+    ANOTHALTED,
+    AFINISHREGACCESS,
+    ASBACCESS,
+    ASBSIZERROR,
+    ASBOTHERERROR,
+    ASBSTART
 } astate_e;
 
 astate_e astate, next_astate;
@@ -90,18 +94,23 @@ always_comb begin
     dbg_rwrdata = data0; // in Register Access
 
     case(astate)
-        AIDLE: next_astate = dmi_start && dmi_op == 2 && dmi_address == 7'h17 ? APARSE : AIDLE;
-        APARSE: next_astate = command.cmdtype == 0 ? AREGACCESS : ANOTSUPPORTED;
+        AIDLE: next_astate = dmi_start && dmi_op == 2 && dmi_address == 7'h17 && abstractcs.cmderr == 0 ? APARSE : AIDLE;
+        APARSE: next_astate = command.cmdtype == 0 ? (halted ? AREGACCESS : ANOTHALTED) : (command.cmdtype == 2 ? (halted ? ASBACCESS : ANOTHALTED) :ANOTSUPPORTED);
+        ANOTHALTED: next_astate = AIDLE;
         ANOTSUPPORTED: next_astate = AIDLE;
         AREGACCESS: next_astate = AFINISHREGACCESS;
         AFINISHREGACCESS: next_astate = AIDLE;
+        ASBACCESS: next_astate = sbcs.sbaccess != 2 ? ASBSIZERROR : amcct.aamvirtual ? ASBOTHERERROR : ASBSTART;
+        ASBSIZERROR: next_astate = AIDLE;
+        ASBOTHERERROR: next_astate = AIDLE;
+        ASBSTART: next_astate = AIDLE;
         default: next_astate = AIDLE;
     endcase
 end
 
 // Register Access
 always_comb begin
-    if (astate == AREGACCESS)
+    if (astate == AREGACCESS || astate == AFINISHREGACCESS)
         dbg_arcc = command.control;
     else
         dbg_arcc = 0;
@@ -132,6 +141,7 @@ always_comb begin
 
     dmi_data_o_dmcontrol = dmcontrol_t'(dmi_data_o);
     dmi_data_o_abstracts = abstractcs_t'(dmi_data_o);
+    dmi_data_o_sbcs = sbcs_t'(dmi_data_o);
 
     case(dmi_address)
         7'h04: dmi_data_i = data0;
@@ -141,9 +151,6 @@ always_comb begin
         7'h11: dmi_data_i = dmstatus; //
         7'h12: dmi_data_i = hartinfo; //
         7'h16: dmi_data_i = abstractcs; //
-        7'h20: dmi_data_i = progbuf[0];
-        7'h21: dmi_data_i = progbuf[1];
-        7'h22: dmi_data_i = progbuf[3];
         7'h38: dmi_data_i = sbcs; //
         7'h39: dmi_data_i = sbaddress0;
         7'h3C: dmi_data_i = sbdata0; // side effects
@@ -153,6 +160,7 @@ end
 
 dmcontrol_t dmi_data_o_dmcontrol;
 abstractcs_t dmi_data_o_abstracts;
+sbcs_t dmi_data_o_sbcs;
 
 always_ff @(posedge clk, negedge rst_n)
     if (!rst_n) begin
@@ -160,10 +168,28 @@ always_ff @(posedge clk, negedge rst_n)
         resethaltreq <= 0;
         resumereq <= 0;
         haltreq <= 0;
-        abstractcs <= {3'h0, 5'd3, 11'h0, 1'b0, 1'h0, 3'h0, 4'h0, 4'h3};
+        abstractcs <= {3'h0, 5'd0, 11'h0, 1'b0, 1'h0, 3'h0, 4'h0, 4'h3};
         anyhavereset <= 0;
+        sbcs <= {3'd1, 6'b0, 1'b0, 1'b0, 1'b0, 3'd2, 1'b0, 1'b0, 3'b0, 7'd32, 5'b00100};
     end else begin
-        // Register access read into data(0-2)?
+        // SB
+        sbcs.sbbusy <= dbus_state != BIDLE;
+
+        if (astate == ASBSIZERROR)
+            sbcs.sberror <= 4;
+        
+        if (astate == ASBOTHERERROR)
+            sbcs.sberror <= 7;
+
+        if (dbus.bdone && sbcs.sbautoincrement)
+            sbaddress0 <= sbaddress0 + 4; // always 32-bit access, so we increment by 4 bytes
+
+        if (astate == ASBSTART || (dmi_start && dmi_op == 2 && dmi_address == 7'h39 && sbcs.sbreadonaddr) || (dmi_start && dmi_op == 1 && dmi_address == 7'h38 && sbcs.sbreadondata))
+            start_dbus_transaction <= 1;
+        else
+            start_dbus_transaction <= 0;
+
+        // Rest
         if (astate == AFINISHREGACCESS && dbg_arcc.transfer & !dbg_arcc.write) // read from it
             data0 <= dbg_regout;
         
@@ -173,16 +199,20 @@ always_ff @(posedge clk, negedge rst_n)
         if (astate == ANOTSUPPORTED)
             abstractcs.cmderr <= 3'd2;
 
+        if (astate == ANOTHALTED)
+            abstractcs.cmderr <= 3'd4;
+
         if (dmi_start && dmi_op == 2) begin
             case(dmi_address)
                 7'h10: begin
-                    if (!dmi_data_o_dmcontrol.dmactive) begin
+                    if (!dmi_data_o_dmcontrol.dmactive) begin // writing 0 always reset the hole thing
                         // reset DM
                         dmcontrol <= 0;
                         resethaltreq <= 0;
                         resumereq <= 0;
                         haltreq <= 0;
-                        abstractcs <= {3'h0, 5'd3, 11'h0, 1'b0, 1'h0, 3'h0, 4'h0, 4'h3};
+                        abstractcs <= {3'h0, 5'd0, 11'h0, 1'b0, 1'h0, 3'h0, 4'h0, 4'h3};
+                        sbcs <= {3'd1, 6'b0, 1'b0, 1'b0, 1'b0, 3'd2, 1'b0, 1'b0, 3'b0, 7'd32, 5'b00100};
                     end else begin
                         if (dmi_data_o_dmcontrol.setresethaltreq) begin
                             resethaltreq <= 1;
@@ -208,18 +238,70 @@ always_ff @(posedge clk, negedge rst_n)
                     end
                 end
                 7'h16: begin
-                    if (dmi_data_o_abstracts.cmderr == 1)
+                    if (dmi_data_o_abstracts.cmderr == 3'b111)
                         abstractcs.cmderr <= 0;
                 end
                 7'h17: command <= dmi_data_o;
                 7'h04: data0 <= dmi_data_o;
                 7'h05: data1 <= dmi_data_o;
                 7'h06: data2 <= dmi_data_o;
-                7'h20: progbuf[0] <= dmi_data_o;
-                7'h21: progbuf[1] <= dmi_data_o;
-                7'h22: progbuf[3] <= dmi_data_o;
+                7'h38: begin
+                    if (dmi_data_o_sbcs.sberror == 3'b111)
+                        sbcs.sberror <= 0;
+
+                    if (dmi_data_o_sbcs.sbbusyerror == 1'b1)
+                        sbcs.sbbusyerror <= 0; // TODO: isa OpenOCD is smart enough to not cause this
+
+                    sbcs.sbreadonaddr <= dmi_data_o_sbcs.sbreadonaddr;
+                    sbcs.sbaccess <= dmi_data_o_sbcs.sbaccess;
+                    sbcs.sbautoincrement <= dmi_data_o_sbcs.sbautoincrement;
+                    sbcs.sbreadondata <= dmi_data_o_sbcs.sbreadondata;
+                end
+                7'h39: sbaddress0 <= dmi_data_o;
+                7'h3C: sbdata0 <= dmi_data_o;
             endcase
         end
     end
+
+// D-bus
+typedef enum logic [1:0] {BIDLE, BSTART, BDELAY, BONGOING} bus_state_e;
+bus_state_e dbus_state, next_dbus_state;
+
+always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n)
+        dbus_state <= BIDLE;
+    else
+        dbus_state <= next_dbus_state;
+end
+
+logic dbus_transaction_finished;
+always_comb begin
+    dbus.bstart = dbus_state == BSTART;
+    dbus_transaction_finished = (dbus_state == BDELAY) | ((dbus_state == BONGOING) && dbus.bdone);
+end
+
+logic start_dbus_transaction; // when sbcs written or read from data0 or written to address0
+
+always_comb begin
+    case(dbus_state)
+        BIDLE: next_dbus_state =  start_dbus_transaction ? BSTART : BIDLE;
+        BSTART: next_dbus_state = dbus.bdone ? BDELAY : BONGOING;
+        BDELAY: next_dbus_state = BIDLE;
+        BONGOING: next_dbus_state = dbus.bdone ? BIDLE : BONGOING;
+    endcase
+end
+
+access_memory_command_control_t amcct;
+
+always_comb begin
+    amcct = command.control;
+
+    dbus.wdata = data0; // always writing from data in register
+    // dbus.bstart = ; handle by FSM
+    dbus.ttype = amcct.write ? WRITE : READ;
+    dbus.breq = dbus.bstart; // TODO: breq and bstart are same? either have clear sepearion in logic or collapse into one
+    dbus.addr = data1; // arg1 always address
+    dbus.tsize = WORD;
+end
 
 endmodule

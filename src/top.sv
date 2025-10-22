@@ -49,6 +49,11 @@ slave_bus_if dbus_if_clit0(clk, rst_n);
 // riscv32 core-0
 logic irq_sw0, irq_ext0, irq_timer0, running, halted, haltreq, resumereq, resethaltreq;
 
+// debug signals
+access_register_command_control_t dbg_arcc;
+logic [31:0] dbg_rwrdata;
+logic [31:0] dbg_regout;
+
 rv_core #(.INITIAL_PC(32'h2000_0000)) core0(
     .ibus(ibus_if_core0),
     .dbus(dbus_if_core0),
