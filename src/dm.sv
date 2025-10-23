@@ -142,20 +142,6 @@ always_comb begin
     dmi_data_o_dmcontrol = dmcontrol_t'(dmi_data_o);
     dmi_data_o_abstracts = abstractcs_t'(dmi_data_o);
     dmi_data_o_sbcs = sbcs_t'(dmi_data_o);
-
-    case(dmi_address)
-        7'h04: dmi_data_i = data0;
-        7'h05: dmi_data_i = data1;
-        7'h06: dmi_data_i = data2;
-        7'h10: dmi_data_i = dmcontrol; // 
-        7'h11: dmi_data_i = dmstatus; //
-        7'h12: dmi_data_i = hartinfo; //
-        7'h16: dmi_data_i = abstractcs; //
-        7'h38: dmi_data_i = sbcs; //
-        7'h39: dmi_data_i = sbaddress0;
-        7'h3C: dmi_data_i = sbdata0; // side effects
-        default: dmi_data_i = 0; 
-    endcase
 end
 
 dmcontrol_t dmi_data_o_dmcontrol;
@@ -172,6 +158,22 @@ always_ff @(posedge clk, negedge rst_n)
         anyhavereset <= 0;
         sbcs <= {3'd1, 6'b0, 1'b0, 1'b0, 1'b0, 3'd2, 1'b0, 1'b0, 3'b0, 7'd32, 5'b00100};
     end else begin
+        // Read registered
+        if (dmi_start && dmi_op == 1)
+            case(dmi_address)
+                7'h04: dmi_data_i = data0;
+                7'h05: dmi_data_i = data1;
+                7'h06: dmi_data_i = data2;
+                7'h10: dmi_data_i = dmcontrol; // 
+                7'h11: dmi_data_i = dmstatus; //
+                7'h12: dmi_data_i = hartinfo; //
+                7'h16: dmi_data_i = abstractcs; //
+                7'h38: dmi_data_i = sbcs; //
+                7'h39: dmi_data_i = sbaddress0;
+                7'h3C: dmi_data_i = sbdata0; // side effects
+                default: dmi_data_i = 0; 
+            endcase
+
         // SB
         sbcs.sbbusy <= dbus_state != BIDLE;
 
@@ -193,7 +195,7 @@ always_ff @(posedge clk, negedge rst_n)
         if (astate == AFINISHREGACCESS && dbg_arcc.transfer & !dbg_arcc.write) // read from it
             data0 <= dbg_regout;
         
-        if ((dmi_address == 7'h17 || dmi_address == 7'h16 || dmi_address == 7'h18) && dmi_start && dmi_op == 2 || dmi_start && (dmi_address == 7'h04 || dmi_address == 7'h05 || dmi_address == 7'h06))
+        if (astate != AIDLE && ((dmi_address == 7'h17 || dmi_address == 7'h16 || dmi_address == 7'h18) && dmi_start && dmi_op == 2 || dmi_start && (dmi_address == 7'h04 || dmi_address == 7'h05 || dmi_address == 7'h06)))
             abstractcs.cmderr <= 3'd1;
 
         if (astate == ANOTSUPPORTED)
