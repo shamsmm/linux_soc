@@ -75,11 +75,7 @@ typedef enum logic [3:0] {
     AREGACCESS,
     AEXECUTING,
     ANOTHALTED,
-    AFINISHREGACCESS,
-    ASBACCESS,
-    ASBSIZERROR,
-    ASBOTHERERROR,
-    ASBSTART
+    AFINISHREGACCESS
 } astate_e;
 
 astate_e astate, next_astate;
@@ -95,15 +91,11 @@ always_comb begin
 
     case(astate)
         AIDLE: next_astate = dmi_start && dmi_op == 2 && dmi_address == 7'h17 && abstractcs.cmderr == 0 ? APARSE : AIDLE;
-        APARSE: next_astate = command.cmdtype == 0 ? (halted ? AREGACCESS : ANOTHALTED) : (command.cmdtype == 2 ? (halted ? ASBACCESS : ANOTHALTED) :ANOTSUPPORTED);
+        APARSE: next_astate = command.cmdtype == 0 ? (halted ? AREGACCESS : ANOTHALTED) : ANOTSUPPORTED;
         ANOTHALTED: next_astate = AIDLE;
         ANOTSUPPORTED: next_astate = AIDLE;
         AREGACCESS: next_astate = AFINISHREGACCESS;
         AFINISHREGACCESS: next_astate = AIDLE;
-        ASBACCESS: next_astate = sbcs.sbaccess != 2 ? ASBSIZERROR : amcct.aamvirtual ? ASBOTHERERROR : ASBSTART;
-        ASBSIZERROR: next_astate = AIDLE;
-        ASBOTHERERROR: next_astate = AIDLE;
-        ASBSTART: next_astate = AIDLE;
         default: next_astate = AIDLE;
     endcase
 end
@@ -177,19 +169,21 @@ always_ff @(posedge clk, negedge rst_n)
         // SB
         sbcs.sbbusy <= dbus_state != BIDLE;
 
-        if (astate == ASBSIZERROR)
-            sbcs.sberror <= 4;
+        //if (dbus_state == ASBSIZERROR) // OpenOCD should be smart enough
+        //    sbcs.sberror <= 4;
         
-        if (astate == ASBOTHERERROR)
-            sbcs.sberror <= 7;
 
         if (dbus.bdone && sbcs.sbautoincrement)
             sbaddress0 <= sbaddress0 + 4; // always 32-bit access, so we increment by 4 bytes
 
-        if (astate == ASBSTART || (dmi_start && dmi_op == 2 && dmi_address == 7'h39 && sbcs.sbreadonaddr) || (dmi_start && dmi_op == 1 && dmi_address == 7'h38 && sbcs.sbreadondata))
-            start_dbus_transaction <= 1;
-        else
-            start_dbus_transaction <= 0;
+        start_dbus_r_transaction <= 0;
+        start_dbus_w_transaction <= 0;
+        if (sbcs.sberror == 0 && sbcs.sbbusyerror == 0) begin
+            if ((dmi_start && dmi_op == 2 && dmi_address == 7'h39 && sbcs.sbreadonaddr) || (dmi_start && dmi_op == 1 && dmi_address == 7'h3C && sbcs.sbreadondata))
+                start_dbus_r_transaction <= 1;
+            else if (dmi_start && dmi_op == 2 && dmi_address == 7'h3C)
+                start_dbus_w_transaction <= 1;
+        end
 
         // Rest
         if (astate == AFINISHREGACCESS && dbg_arcc.transfer & !dbg_arcc.write) // read from it
@@ -267,7 +261,7 @@ always_ff @(posedge clk, negedge rst_n)
     end
 
 // D-bus
-typedef enum logic [1:0] {BIDLE, BSTART, BDELAY, BONGOING} bus_state_e;
+typedef enum logic [2:0] {BIDLE, BRSTART, BRDELAY, BRONGOING, BWSTART, BWDELAY, BWONGOING} bus_state_e;
 bus_state_e dbus_state, next_dbus_state;
 
 always_ff @(posedge clk or negedge rst_n) begin
@@ -277,33 +271,30 @@ always_ff @(posedge clk or negedge rst_n) begin
         dbus_state <= next_dbus_state;
 end
 
-logic dbus_transaction_finished;
 always_comb begin
-    dbus.bstart = dbus_state == BSTART;
-    dbus_transaction_finished = (dbus_state == BDELAY) | ((dbus_state == BONGOING) && dbus.bdone);
+    dbus.bstart = dbus_state == BRSTART || dbus_state == BWSTART;
 end
 
-logic start_dbus_transaction; // when sbcs written or read from data0 or written to address0
+logic start_dbus_r_transaction, start_dbus_w_transaction; // when sbcs written or read from data0 or written to address0
 
 always_comb begin
     case(dbus_state)
-        BIDLE: next_dbus_state =  start_dbus_transaction ? BSTART : BIDLE;
-        BSTART: next_dbus_state = dbus.bdone ? BDELAY : BONGOING;
-        BDELAY: next_dbus_state = BIDLE;
-        BONGOING: next_dbus_state = dbus.bdone ? BIDLE : BONGOING;
+        BIDLE: next_dbus_state =  start_dbus_r_transaction ? BRSTART : start_dbus_w_transaction ? BWSTART : BIDLE;
+        BRSTART: next_dbus_state = dbus.bdone ? BRDELAY : BRONGOING;
+        BWSTART: next_dbus_state = dbus.bdone ? BWDELAY : BWONGOING;
+        BRDELAY: next_dbus_state = BIDLE;
+        BWDELAY: next_dbus_state = BIDLE;
+        BRONGOING: next_dbus_state = dbus.bdone ? BIDLE : BRONGOING;
+        BWONGOING: next_dbus_state = dbus.bdone ? BIDLE : BWONGOING;
     endcase
 end
 
-access_memory_command_control_t amcct;
-
 always_comb begin
-    amcct = command.control;
-
     dbus.wdata = data0; // always writing from data in register
     // dbus.bstart = ; handle by FSM
-    dbus.ttype = amcct.write ? WRITE : READ;
+    dbus.ttype = dbus_state inside {BRSTART, BRDELAY, BRONGOING} ? READ : WRITE;
     dbus.breq = dbus.bstart; // TODO: breq and bstart are same? either have clear sepearion in logic or collapse into one
-    dbus.addr = data1; // arg1 always address
+    dbus.addr = sbaddress0;
     dbus.tsize = WORD;
 end
 
