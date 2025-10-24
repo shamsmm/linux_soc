@@ -178,6 +178,12 @@ end
 
 always_comb {dmi_address, dmi_data_o, dmi_op} = dr_ff2;
 
+logic [33:2] dmi_data_last_trn;
+always_ff @(posedge clk) begin
+    if (dmi_finish)
+        dmi_data_last_trn <= dmi_data_i;
+end
+
 always_ff @(negedge tclk, negedge trst)
     if (!trst) begin
         ir <= IDCODE;
@@ -228,7 +234,7 @@ always_ff @(posedge tclk or negedge trst) begin
                 case(ir)
                     IDCODE: dr <= {9'b0, IDCODE_VALUE};
                     DTM: dr <= {9'b0, {dtmcs[31:12], dmistat, dtmcs[9:0]}};
-                    DMI: dr <= {dmi_address, dmi_data_i, dmi_error};
+                    DMI: dr <= {dmi_address, dmi_data_last_trn, dmi_error};
                     BYPASS: bypass <= 0;
                     default: bypass <= 0;
                 endcase

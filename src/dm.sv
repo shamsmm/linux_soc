@@ -236,7 +236,8 @@ always_ff @(posedge clk, negedge rst_n)
                             resumereq <= 0;
                         end
 
-                        dmcontrol <= dmi_data_o&41'b11; // only ndmreset and dmactive are read and write
+                        dmcontrol.ndmreset <= dmi_data_o_dmcontrol.ndmreset;
+                        dmcontrol.dmactive <= dmi_data_o_dmcontrol.dmactive;
                     end
                 end
                 7'h16: begin
