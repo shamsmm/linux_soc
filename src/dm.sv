@@ -190,7 +190,7 @@ always_ff @(posedge clk, negedge rst_n)
                 start_dbus_w_transaction <= 1;
         end
 
-        if (dbus.bdone && dbus_state == BWONGOING)
+        if (dbus.bdone && (dbus_state == BRONGOING || dbus_state == BRDELAY))
             sbdata0 <= dbus.rdata;
 
         // Rest

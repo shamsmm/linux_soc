@@ -40,7 +40,7 @@ always_ff @( posedge clk, negedge rst_n ) begin
         output_en <= 8'b00;
         output_val <= 8'b00;
     end
-    else if (bus.ss && bus.ttype == WRITE) begin
+    else if (bus.bstart && bus.ss && bus.ttype == WRITE) begin
         case(bus.addr[7:0])
             8'h04: input_en <= bus.wdata[7:0];
             8'h08: output_en <= bus.wdata[7:0];
