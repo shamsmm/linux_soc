@@ -185,6 +185,9 @@ always_ff @(posedge clk, negedge rst_n)
                 start_dbus_w_transaction <= 1;
         end
 
+        if (dbus.bdone && dbus_state == BWONGOING)
+            sbdata0 <= dbus.rdata;
+
         // Rest
         if (astate == AFINISHREGACCESS && dbg_arcc.transfer & !dbg_arcc.write) // read from it
             data0 <= dbg_regout;
@@ -290,9 +293,9 @@ always_comb begin
 end
 
 always_comb begin
-    dbus.wdata = data0; // always writing from data in register
+    dbus.wdata = sbdata0; // always writing from data in register
     // dbus.bstart = ; handle by FSM
-    dbus.ttype = dbus_state inside {BRSTART, BRDELAY, BRONGOING} ? READ : WRITE;
+    dbus.ttype = (start_dbus_r_transaction | dbus_state inside {BRSTART, BRDELAY, BRONGOING}) ? READ : WRITE; // TODO: better FSM or extra reg handling?
     dbus.breq = dbus.bstart; // TODO: breq and bstart are same? either have clear sepearion in logic or collapse into one
     dbus.addr = sbaddress0;
     dbus.tsize = WORD;
