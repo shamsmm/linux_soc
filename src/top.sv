@@ -105,10 +105,10 @@ logic [33:2] dmi_data_o, dmi_data_i;
 logic [7+33:34] dmi_address;
 logic dmi_finish;
 logic dtm_tdo;
-dtm_jtag debug_transport(.tdi(tdi), .trst(trst), .tms(tms), .tclk(tclk), .tdo(dtm_tdo), .tdo_en(tdo_en), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i), .clk(clk), .rst_n(rst_n));
+dtm_jtag debug_transport(.tdi(tdi), .trst(trst), .tms(tms), .tclk(tclk), .tdo(dtm_tdo), .tdo_en(tdo_en), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i), .clk(clk), .rst_n(sysrst_n));
 
 logic ndmreset;
-dm debug_module(.haltreq(haltreq), .resumereq(resumereq), .resethaltreq(resethaltreq), .halted(halted), .running(running), .clk(clk), .rst_n(rst_n), .ndmreset(ndmreset), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i), .dbus(dbus_if_dm0), .dbg_arcc(dbg_arcc), .dbg_regout(dbg_regout), .dbg_rwrdata(dbg_rwrdata));
+dm debug_module(.dbus(dbus_if_dm0), .dbg_arcc(dbg_arcc), .dbg_rwrdata(dbg_rwrdata), .dbg_regout(dbg_regout), .haltreq(haltreq), .resumereq(resumereq), .resethaltreq(resethaltreq), .halted(halted), .running(running), .clk(clk), .rst_n(sysrst_n), .ndmreset(ndmreset), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i));
 
 TBUF jtag_tdo (
   .I    (dtm_tdo),      // Input data

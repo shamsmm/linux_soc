@@ -1,4 +1,5 @@
 import instructions::*;
+import bus_if_types_pkg::*;
 // Single hart DM
 module dm(
     // DMI trivial bus
@@ -91,7 +92,7 @@ always_comb begin
 
     case(astate)
         AIDLE: next_astate = dmi_start && dmi_op == 2 && dmi_address == 7'h17 && abstractcs.cmderr == 0 ? APARSE : AIDLE;
-        APARSE: next_astate = command.cmdtype == 0 ? (halted ? AREGACCESS : ANOTHALTED) : ANOTSUPPORTED;
+        APARSE: next_astate = command.cmdtype == 0 ? (halted ? (arcc.aarsize == 2 ? AREGACCESS : ANOTSUPPORTED) : ANOTHALTED) : ANOTSUPPORTED;
         ANOTHALTED: next_astate = AIDLE;
         ANOTSUPPORTED: next_astate = AIDLE;
         AREGACCESS: next_astate = AFINISHREGACCESS;
@@ -100,10 +101,14 @@ always_comb begin
     endcase
 end
 
+access_register_command_control_t arcc;
+
 // Register Access
 always_comb begin
+    arcc = command.control;
+
     if (astate == AREGACCESS || astate == AFINISHREGACCESS)
-        dbg_arcc = command.control;
+        dbg_arcc = arcc;
     else
         dbg_arcc = 0;
 end
