@@ -68,3 +68,13 @@ iverilog -o sim concat.v && vvp sim
 DTM has a version
 DM has a version
 both independently so OpenOCD may break if not correct in hardware
+
+## Milestones
+
+OpenOCD successfully examining my core
+
+```text
+debug_level: 1
+Warn : [riscv.cpu] We won't be able to execute fence instructions on this target. Memory may not always appear consistent. (progbufsize=0, impebreak=0)
+[riscv.cpu] Target successfully examined.
+```

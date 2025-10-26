@@ -1,4 +1,4 @@
-module dtm_jtag(
+module dtm_jtag #(parameter string CDC = "REG") (
     // JTAG signals
     output logic tdo,
     output logic tdo_en,
@@ -68,30 +68,30 @@ typedef enum logic [1:0] {
 
 fsm_state_e fsm_state, next_fsm_state;
 logic [1:0] fsm_state_ff2, next_fsm_state_ff2;
-`define VERILATOR
-`ifdef VERILATOR
-// Simulation-only double flip-flop synchronizer (clk -> tclk)
-reg [1:0] fsm_state_ff1;
 
-always @(posedge tclk) begin
-    fsm_state_ff1 <= fsm_state;     // First sync stage
-    fsm_state_ff2 <= fsm_state_ff1; // Second sync stage
-end
-`else
-// Real hardware FIFO instance for CDC
-FIFO_HS_Top fsm_state_cdc(
-    .Data(fsm_state),
-    .WrClk(clk),
-    .RdClk(tclk),
-    .WrEn(1'b1),
-    .RdEn(1'b1),
-    .Almost_Empty(),
-    .Almost_Full(),
-    .Q(fsm_state_ff2),
-    .Empty(),
-    .Full()
-);
-`endif
+generate
+    if (CDC == "REG") begin
+        reg [1:0] fsm_state_ff1;
+
+        always @(posedge tclk) begin
+            fsm_state_ff1 <= fsm_state;     // First sync stage
+            fsm_state_ff2 <= fsm_state_ff1; // Second sync stage
+        end
+    end else if (CDC == "IP") begin
+        FIFO_HS_Top fsm_state_cdc(
+            .Data(fsm_state),
+            .WrClk(clk),
+            .RdClk(tclk),
+            .WrEn(1'b1),
+            .RdEn(1'b1),
+            .Almost_Empty(),
+            .Almost_Full(),
+            .Q(fsm_state_ff2),
+            .Empty(),
+            .Full()
+        );
+    end
+endgenerate
 
 struct packed {jtag_state_t state; logic[5:0] ir; logic [1:0] dmiop; logic dmihardreset;} tclk_signals, tclk_signals_ff2;
 
