@@ -16,6 +16,8 @@ module dm(
     output bit resethaltreq,
     input bit halted,
     input bit running,
+    input bit resumeack,
+    input bit reset,
 
     // abstract command
     output access_register_command_control_t dbg_arcc,
@@ -113,7 +115,20 @@ always_comb begin
         dbg_arcc = 0;
 end
         
-logic anyhavereset;
+logic anyhavereset, anyresumeack;
+
+always_ff @(posedge clk, negedge rst_n)
+    if (!rst_n) begin
+        anyresumeack <= 0;
+    end else begin 
+        if (resumeack)
+            anyresumeack <= 1;
+        
+        if (reset)
+            anyhavereset <= 1;
+        else if (dmi_start && dmi_op == 2 && dmi_address == 7'h10 && dmi_data_o_dmcontrol.ackhavereset)
+            anyhavereset <= 0;
+    end
 
 always_comb begin
     ndmreset = dmcontrol.ndmreset;
@@ -126,7 +141,7 @@ always_comb begin
     dmstatus.allhalted = dmstatus.anyhalted; // only single hart
     dmstatus.anyrunning = running;
     dmstatus.allrunning = dmstatus.anyrunning; // only single hart
-    dmstatus.anyresumeack = running; // hack?
+    dmstatus.anyresumeack = anyresumeack;
     dmstatus.allresumeack = dmstatus.anyresumeack;
     dmstatus.anyhavereset = anyhavereset;
     dmstatus.allhavereset = dmstatus.anyhavereset;
@@ -145,14 +160,34 @@ dmcontrol_t dmi_data_o_dmcontrol;
 abstractcs_t dmi_data_o_abstracts;
 sbcs_t dmi_data_o_sbcs;
 
+enum logic {TIDLE, TACTION} toggle_haltreq, toggle_resume;
+
+always_ff @(posedge clk, negedge rst_n)
+    if (!rst_n) begin
+        toggle_haltreq <= TIDLE;
+        toggle_resume <= TIDLE;
+    end else begin
+        if (dmi_start && dmi_op == 2 && dmi_address == 7'h10 && dmi_data_o_dmcontrol.haltreq)
+            toggle_haltreq <= TACTION;
+        else if (toggle_haltreq == TACTION)
+            toggle_haltreq <= TIDLE;
+
+        if (dmi_start && dmi_op == 2 && dmi_address == 7'h10 && dmi_data_o_dmcontrol.resumereq)
+            toggle_resume <= TACTION;
+        else if (toggle_resume == TACTION)
+            toggle_resume <= TIDLE;
+    end
+
+always_comb begin 
+    resumereq = toggle_resume == TACTION;
+    haltreq = toggle_haltreq == TACTION;
+end
+
 always_ff @(posedge clk, negedge rst_n)
     if (!rst_n) begin
         dmcontrol <= 0;
         resethaltreq <= 0;
-        resumereq <= 0;
-        haltreq <= 0;
         abstractcs <= {3'h0, 5'd0, 11'h0, 1'b0, 1'h0, 3'h0, 4'h0, 4'h3};
-        anyhavereset <= 0;
         sbcs <= {3'd1, 6'b0, 1'b0, 1'b0, 1'b0, 3'd2, 1'b0, 1'b0, 3'b0, 7'd32, 5'b00100};
     end else begin
         // Read registered
@@ -213,8 +248,6 @@ always_ff @(posedge clk, negedge rst_n)
                         // reset DM
                         dmcontrol <= 0;
                         resethaltreq <= 0;
-                        resumereq <= 0;
-                        haltreq <= 0;
                         abstractcs <= {3'h0, 5'd0, 11'h0, 1'b0, 1'h0, 3'h0, 4'h0, 4'h3};
                         sbcs <= {3'd1, 6'b0, 1'b0, 1'b0, 1'b0, 3'd2, 1'b0, 1'b0, 3'b0, 7'd32, 5'b00100};
                     end else begin
@@ -224,19 +257,7 @@ always_ff @(posedge clk, negedge rst_n)
                             resethaltreq <= 0;
                         end 
                         
-                        if (dmi_data_o_dmcontrol.ackhavereset) begin
-                            anyhavereset <= 0;
-                        end else begin
-                            anyhavereset <= dmi_data_o_dmcontrol.ndmreset; // instantaneous reset
-                        end
-
-                        if (dmi_data_o_dmcontrol.resumereq & halted) begin
-                            haltreq <= 0;
-                            resumereq <= 1;
-                        end else if (dmi_data_o_dmcontrol.haltreq) begin
-                            haltreq <= 1;
-                            resumereq <= 0;
-                        end
+                        // halt and resume taken care of by FSMs
 
                         dmcontrol.ndmreset <= dmi_data_o_dmcontrol.ndmreset;
                         dmcontrol.dmactive <= dmi_data_o_dmcontrol.dmactive;
