@@ -161,8 +161,10 @@ always_ff @(negedge tclk, negedge trst)
                     BYPASS: begin
                         tdo <= bypass;
                     end
+                    default: tdo <= 0;
                 endcase
             end
+            default:;
         endcase
 
 logic [40:0] dr_ff1, dr_ff2;
@@ -196,6 +198,7 @@ always_ff @(negedge tclk, negedge trst)
                 //DMI: {dmi_address, dmi_data_o, dmi_op} <= dr; // another fsm starts the transaction // always update dmi
                 default:;
             endcase
+            default:;
         endcase
 
 dmistat_e dmistat;
@@ -249,6 +252,7 @@ always_ff @(posedge tclk or negedge trst) begin
                     default: bypass <= tdi; // Default to BYPASS
                 endcase
             end
+            default:;
         endcase
     end
 end

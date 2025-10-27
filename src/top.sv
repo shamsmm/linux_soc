@@ -26,7 +26,7 @@ Gowin_CLKDIV divider0 (
     .resetn(rst_n) //input resetn
 );
 
-soc #(.CDC("IP")) soc(.*); // The SoC
+soc #(.CDC("REG")) soc(.*); // The SoC
 
 TBUF jtag_tdo (
   .I    (tdo),      // Input data

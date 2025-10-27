@@ -264,6 +264,7 @@ always_ff @(posedge clk, negedge rst_n)
                 end
                 7'h39: sbaddress0 <= dmi_data_o;
                 7'h3C: sbdata0 <= dmi_data_o;
+                default:;
             endcase
         end
     end
@@ -294,6 +295,7 @@ always_comb begin
         BWDELAY: next_dbus_state = BIDLE;
         BRONGOING: next_dbus_state = dbus.bdone ? BIDLE : BRONGOING;
         BWONGOING: next_dbus_state = dbus.bdone ? BIDLE : BWONGOING;
+        default: next_dbus_state = BIDLE;
     endcase
 end
 
