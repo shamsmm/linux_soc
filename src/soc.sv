@@ -1,4 +1,4 @@
-module soc(
+module soc #(parameter string CDC = "REG") (
     input clk, sysrst_n, rst_n,
     output tdo,
     output tdo_en,
@@ -44,7 +44,7 @@ memory_wrapped mem0(.ibus(ibus_if_mem0), .dbus(dbus_if_mem0), .clk(clk), .rst_n(
 rom_wrapped rom0(.bus(ibus_if_rom0), .clk(clk), .rst_n(rst_n));
 
 // gpio memory mapped
-gpio_wrapped gpio0(.bus(dbus_if_gpio0), .clk(clk));
+gpio_wrapped gpio0(.bus(dbus_if_gpio0), .gpio(gpio), .clk(clk), .rst_n(rst_n));
 
 // clint
 clint clint0(.bus(dbus_if_clit0), .clk(clk), .irq_sw(irq_sw0), .irq_timer(irq_timer0), .rst_n(rst_n));
@@ -61,7 +61,7 @@ logic [1:0] dmi_op;
 logic [33:2] dmi_data_o, dmi_data_i;
 logic [7+33:34] dmi_address;
 logic dmi_finish;
-dtm_jtag debug_transport(.tdi(tdi), .trst(trst), .tms(tms), .tclk(tclk), .tdo(tdo), .tdo_en(tdo_en), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i), .clk(clk), .rst_n(sysrst_n));
+dtm_jtag #(CDC) debug_transport(.tdi(tdi), .trst(trst), .tms(tms), .tclk(tclk), .tdo(tdo), .tdo_en(tdo_en), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i), .clk(clk), .rst_n(sysrst_n));
 
 dm debug_module(.dbus(dbus_if_dm0), .dbg_arcc(dbg_arcc), .dbg_rwrdata(dbg_rwrdata), .dbg_regout(dbg_regout), .haltreq(haltreq), .resumereq(resumereq), .resethaltreq(resethaltreq), .halted(halted), .running(running), .clk(clk), .rst_n(sysrst_n), .ndmreset(ndmreset), .dmi_start(dmi_start), .dmi_op(dmi_op), .dmi_data_o(dmi_data_o), .dmi_address(dmi_address), .dmi_finish(dmi_finish), .dmi_data_i(dmi_data_i));
 

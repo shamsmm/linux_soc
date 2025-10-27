@@ -77,6 +77,14 @@ generate
             fsm_state_ff1 <= fsm_state;     // First sync stage
             fsm_state_ff2 <= fsm_state_ff1; // Second sync stage
         end
+
+        // Define internal synchronization registers
+        struct packed {jtag_state_t state; logic[5:0] ir; logic [1:0] dmiop; logic dmihardreset;} tclk_signals_ff1; //4+6+2+1 13 bits to cross domain
+
+        always @(posedge clk) begin
+            tclk_signals_ff1 <= tclk_signals;     // First stage sync
+            tclk_signals_ff2 <= tclk_signals_ff1; // Second stage sync
+        end
     end else if (CDC == "IP") begin
         FIFO_HS_Top fsm_state_cdc(
             .Data(fsm_state),
@@ -87,6 +95,18 @@ generate
             .Almost_Empty(),
             .Almost_Full(),
             .Q(fsm_state_ff2),
+            .Empty(),
+            .Full()
+        );
+        FIFO_HS_Top next_fsm_state_cdc(
+            .Data({tclk_signals.state, tclk_signals.ir, tclk_signals.dmiop, tclk_signals.dmihardreset}),
+            .WrClk(tclk),
+            .RdClk(clk),
+            .WrEn(1'b1),
+            .RdEn(1'b1),
+            .Almost_Empty(),
+            .Almost_Full(),
+            .Q(tclk_signals_ff2),
             .Empty(),
             .Full()
         );
@@ -119,30 +139,6 @@ always_ff @(posedge clk, negedge rst_n) begin
             fsm_state <= next_fsm_state;
     end
 end
-
-`ifdef VERILATOR
-// Define internal synchronization registers
-struct packed {jtag_state_t state; logic[5:0] ir; logic [1:0] dmiop; logic dmihardreset;} tclk_signals_ff1; //4+6+2+1 13 bits to cross domain
-
-always @(posedge clk) begin
-    tclk_signals_ff1 <= tclk_signals;     // First stage sync
-    tclk_signals_ff2 <= tclk_signals_ff1; // Second stage sync
-end
-`else
-// Actual hardware FIFO instance for CDC
-FIFO_HS_Top next_fsm_state_cdc(
-    .Data({tclk_signals.state, tclk_signals.ir, tclk_signals.dmiop, tclk_signals.dmihardreset}),
-    .WrClk(tclk),
-    .RdClk(clk),
-    .WrEn(1'b1),
-    .RdEn(1'b1),
-    .Almost_Empty(),
-    .Almost_Full(),
-    .Q(tclk_signals_ff2),
-    .Empty(),
-    .Full()
-);
-`endif
 
 jtag_state_t state, next_state;
 jtag_instruction_t ir;
