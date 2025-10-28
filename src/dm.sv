@@ -123,7 +123,10 @@ always_ff @(posedge clk, negedge rst_n)
     end else begin 
         if (resumeack)
             anyresumeack <= 1;
-        
+            
+        if (resumereq && halted)
+            anyresumeack <= 0;
+
         if (reset)
             anyhavereset <= 1;
         else if (dmi_start && dmi_op == 2 && dmi_address == 7'h10 && dmi_data_o_dmcontrol.ackhavereset)
@@ -135,7 +138,7 @@ always_comb begin
 
     dmstatus = '0;
     dmstatus.version = 2;
-    dmstatus.hasresethaltreq = 1;
+    dmstatus.hasresethaltreq = 0; // TODO: enable it
     dmstatus.authenticated = 1;
     dmstatus.anyhalted = halted;
     dmstatus.allhalted = dmstatus.anyhalted; // only single hart

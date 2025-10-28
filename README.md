@@ -81,3 +81,7 @@ debug_level: 1
 Warn : [riscv.cpu] We won't be able to execute fence instructions on this target. Memory may not always appear consistent. (progbufsize=0, impebreak=0)
 [riscv.cpu] Target successfully examined.
 ```
+
+## Testing
+
+Need a way to test asm files with there respective sv test assertions
