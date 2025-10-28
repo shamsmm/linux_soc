@@ -91,7 +91,7 @@ Gowin_DPB wrapped_mem(
     .ocea(1'b1), //input ocea
     .cea(dbus.ss), //input cea
     .reseta(1'b0), //input reseta
-    .wrea(dbus.ttype == WRITE), //input wrea
+    .wrea(dbus.bstart && dbus.ttype == WRITE), //input wrea
     .clkb(clk), //input clkb
     .oceb(1'b1), //input oceb
     .ceb(ibus.ss), //input ceb

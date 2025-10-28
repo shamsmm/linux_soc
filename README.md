@@ -56,6 +56,9 @@ riscv64-unknown-elf-objdump --disassembler-options=no-aliases -D test.elf
 jtag arp_init
 irscan auto0.tap 0x11
 drscan auto0.tap 41 0x04200000002
+
+mdw 0x3000000C
+mww 0xF0000000 0xDEADBEEF
 ```
 
 ## Misc

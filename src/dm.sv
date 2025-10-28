@@ -147,7 +147,7 @@ always_comb begin
     dmstatus.allhavereset = dmstatus.anyhavereset;
 
     hartinfo.nscratch = 2;
-    hartinfo.dataaccess = 1;
+    hartinfo.dataaccess = 0;
     hartinfo.datasize = 3;
     hartinfo.dataaddr = 0; // Debug data is at 0x00000000
 
